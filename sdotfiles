@@ -118,7 +118,6 @@ function ubuntu_setup() {
 }
 ubuntu_setup
 
-ansible-playbook "$DOTFILES/main.yml" "$@"
 
 # ____ ____  _   _ 
 #/ ___/ ___|| | | |
@@ -148,3 +147,4 @@ if ! [[ -d "$DOTFILES" ]]; then
     _task_done
 fi
 
+ansible-playbook "$DOTFILES/main.yml" "$@"
