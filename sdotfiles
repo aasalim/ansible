@@ -116,8 +116,8 @@ function ubuntu_setup() {
     _task_done
   fi
 }
-ubuntu_setup
 
+ubuntu_setup
 
 # ____ ____  _   _ 
 #/ ___/ ___|| | | |
