@@ -6,7 +6,6 @@
 #|  __/ (_| | |_| | | \__ \
 #|_|   \__,_|\__|_| |_|___/
 #                          
-DOTFILES_LOG="$HOME/.dotfiles.log"
 SSH_DIR="$HOME/.ssh"
 
 mkdir -p $SSH_DIR
