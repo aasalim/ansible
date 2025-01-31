@@ -14,5 +14,6 @@ chmod 644 $SSH_DIR/id_docker.pub
 chmod 600 $SSH_DIR/id_docker
 eval $(ssh-agent -s)
 ssh-add $SSH_DIR/id_docker
+cat $SSH_DIR/id_docker.pub >> $SSH_DIR/authorized_keys
 
-apt install vim git
+ssh -T git@github.com
