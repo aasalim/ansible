@@ -37,7 +37,7 @@ RIGHT_ANGLE="${GREEN}\xE2\x88\x9F${NC}"
 set -e
 
 # Paths
-SSH_DIR="$HOME/.ssh"
+DOTFILES_LOG="$HOME/.dotfiles.log"
 
 # _header colorize the given argument with spacing
 function __task {
@@ -88,6 +88,8 @@ function _task_done {
   printf "${OVERWRITE}${LGREEN} [✓]  ${LGREEN}${TASK}\n"
   _clear_task
 }
+#-------------------------------------------------------------------
 
-echo "Hello world"
-# vi:ft=sh:
+__task "Print Hello World"
+_cmd "echo 'Hello World'"
+_task_done
