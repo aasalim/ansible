@@ -1,12 +1,43 @@
 #!/bin/bash
 
+#  ____             __ _           
+# / ___|___  _ __  / _(_) __ _ ___ 
+#| |   / _ \| '_ \| |_| |/ _` / __|
+#| |__| (_) | | | |  _| | (_| \__ \
+# \____\___/|_| |_|_| |_|\__, |___/
+#                        |___/     
+configs=(
+    "$HOME/.bashrc"
+    "$HOME/.tmux.conf"
+    "$HOME/.config/nvim"
+    "$HOME/.local/bin/tmux-sessionizer"
+    "$HOME/.tmuxifier/layouts"
+)
+
+# ____       _   _         
+#|  _ \ __ _| |_| |__  ___ 
+#| |_) / _` | __| '_ \/ __|
+#|  __/ (_| | |_| | | \__ \
+#|_|   \__,_|\__|_| |_|___/
+#                          
+DOTFILES_LOG="$HOME/.dotfiles.log"
+SSH_DIR="$HOME/.ssh"
+
+# _____         _        
+#|_   _|_ _ ___| | _____ 
+#  | |/ _` / __| |/ / __|
+#  | | (_| \__ \   <\__ \
+#  |_|\__,_|___/_|\_\___/
+#                        
 # color codes
 RESTORE='\033[0m'
 NC='\033[0m'
 BLACK='\033[00;30m'
 RED='\033[00;31m'
+
 GREEN='\033[00;32m'
 YELLOW='\033[00;33m'
+
 BLUE='\033[00;34m'
 PURPLE='\033[00;35m'
 CYAN='\033[00;36m'
@@ -16,11 +47,12 @@ LBLACK='\033[01;30m'
 LRED='\033[01;31m'
 LGREEN='\033[01;32m'
 LYELLOW='\033[01;33m'
+
 LBLUE='\033[01;34m'
 LPURPLE='\033[01;35m'
 LCYAN='\033[01;36m'
-
 WHITE='\033[01;37m'
+
 OVERWRITE='\e[1A\e[K'
 
 #emoji codes
@@ -31,53 +63,53 @@ CLOCK="${GREEN}\xE2\x8C\x9B${NC}"
 ARROW="${SEA}\xE2\x96\xB6${NC}"
 BOOK="${RED}\xF0\x9F\x93\x8B${NC}"
 HOT="${ORANGE}\xF0\x9F\x94\xA5${NC}"
+
 WARNING="${RED}\xF0\x9F\x9A\xA8${NC}"
+
 RIGHT_ANGLE="${GREEN}\xE2\x88\x9F${NC}"
 
 set -e
 
-# Paths
-DOTFILES_LOG="$HOME/.dotfiles.log"
-
 # _header colorize the given argument with spacing
 function __task {
-  # if _task is called while a task was set, complete the previous
-  if [[ $TASK != "" ]]; then
-    printf "${OVERWRITE}${LGREEN} [✓]  ${LGREEN}${TASK}\n"
+    # if _task is called while a task was set, complete the previous
+    if [[ $TASK != "" ]]; then
+        printf "${OVERWRITE}${LGREEN} [✓]  ${LGREEN}${TASK}\n"
+    fi
 
-  fi
-  # set new task title and print
-  TASK=$1
-  printf "${LBLACK} [ ]  ${TASK} \n${LRED}"
+    # set new task title and print
+    TASK=$1
+    printf "${LBLACK} [ ]  ${TASK} \n${LRED}"
 }
-
 
 # _cmd performs commands with error checking
 function _cmd {
+    #create log if it doesn't exist
+    if ! [[ -f $DOTFILES_LOG ]]; then
+        touch $DOTFILES_LOG
+    fi
 
-  #create log if it doesn't exist
-  if ! [[ -f $DOTFILES_LOG ]]; then
-    touch $DOTFILES_LOG
+    # empty conduro.log
+    > $DOTFILES_LOG
 
-  fi
-  # empty conduro.log
+    # hide stdout, on error we print and exit
+    if eval "$1" 1> /dev/null 2> $DOTFILES_LOG; then
+        return 0 # success
+    fi
+    # read error from log and add spacing
+    printf "${OVERWRITE}${LRED} [X]  ${TASK}${LRED}\n"
 
-  > $DOTFILES_LOG
-  # hide stdout, on error we print and exit
-  if eval "$1" 1> /dev/null 2> $DOTFILES_LOG; then
+    while read line; do
+        printf "      ${line}\n"
+    done < $DOTFILES_LOG
 
-    return 0 # success
-  fi
-  # read error from log and add spacing
-  printf "${OVERWRITE}${LRED} [X]  ${TASK}${LRED}\n"
-  while read line; do
-    printf "      ${line}\n"
-  done < $DOTFILES_LOG
-  printf "\n"
-  # remove log file
-  rm $DOTFILES_LOG
-  # exit installation
-  exit 1
+    printf "\n"
+
+    # remove log file
+    rm $DOTFILES_LOG
+
+    # exit installation
+    exit 1
 }
 
 function _clear_task {
@@ -88,13 +120,21 @@ function _task_done {
   printf "${OVERWRITE}${LGREEN} [✓]  ${LGREEN}${TASK}\n"
   _clear_task
 }
-#-------------------------------------------------------------------
 
-__task "Setup SSH Permissions"
-_cmd "chmod 700 ~/.ssh"
-_cmd "chmod 644 ~/.ssh/id_docker.pub"
-_cmd "chmod 600 ~/.ssh/id_docker"
-_cmd "eval $(ssh-agent -s)"
-_cmd "ssh-add ~/.ssh/id_docker"
 
-_task_done
+# ____ ____  _   _ 
+#/ ___/ ___|| | | |
+#\___ \___ \| |_| |
+# ___) |__) |  _  |
+#|____/____/|_| |_|
+#                  
+if ! [[ -f "$SSH_DIR/authorized_keys" ]]; then
+    __task "Setup SSH Permissions"
+    _cmd "mkdir -p $SSH_DIR"
+    _cmd "chmod 700 $SSH_DIR"
+    _cmd "chmod 644 $SSH_DIR/id_docker.pub"
+    _cmd "chmod 600 $SSH_DIR/id_docker"
+    _cmd "cat $SSH_DIR/id_docker.pub >> $SSH_DIR/authorized_keys"
+    _task_done
+fi
+
