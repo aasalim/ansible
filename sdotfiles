@@ -7,7 +7,7 @@
 #|_|   \__,_|\__|_| |_|___/
 #                          
 DOTFILES="$HOME/dotfiles"
-DOTFILES_LOG="$HOME/dotfiles/.dotfiles.log"
+DOTFILES_LOG="$HOME/.dotfiles.log"
 SSH_DIR="$HOME/.ssh"
 
 # _____         _        
