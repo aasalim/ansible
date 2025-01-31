@@ -1,26 +1,27 @@
 ---
-- name: "{{ ansible_distribution }} : Dependencies"
+- name: "Neovim | {{ ansible_distribution }} | Dependencies"
   ansible.builtin.apt:
     name:
-      - ninja-build
-      - gettext
       - cmake
-      - unzip
       - curl
-      - git
-      - build-essential
-      - software-properties-common
+      - pkg-config
+      - libtool
+      - unzip
+      - ansible-lint
+      - ripgrep
+
     state: present
+  become: true
+
+- name: "Neovim | {{ ansible_distribution }} | Add APT Repository"
+  ansible.builtin.apt_repository:
+    repo: ppa:neovim-ppa/stable
+    state: present
+    mode: "0644"
+
+  become: true
+
+- name: "Neovim | {{ ansible_distribution }} | Install"
+  ansible.builtin.apt:
     update_cache: yes
-
-- name: "{{ ansible_distribution }} : Clone Repository"
-  git:
-    repo: "https://github.com/neovim/neovim.git"
-    dest: "/usr/local/src/neovim"
-    version: "v0.10.3"
-    force: yes
-
-- name: "{{ ansible_distribution }} : Build"
-  make:
-    chdir: "/usr/local/src/neovim"
-    target: "CMAKE_BUILD_TYPE=Release"
+  become: true
