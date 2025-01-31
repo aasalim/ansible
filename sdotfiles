@@ -90,6 +90,11 @@ function _task_done {
 }
 #-------------------------------------------------------------------
 
-__task "Print Hello World"
-_cmd "echo 'Hello World'"
+__task "Setup SSH Permissions"
+_cmd "chmod 700 ~/.ssh"
+_cmd "chmod 644 ~/.ssh/id_docker.pub"
+_cmd "chmod 600 ~/.ssh/id_docker"
+_cmd "eval $(ssh-agent -s)"
+_cmd "ssh-add ~/.ssh/id_docker"
+
 _task_done
