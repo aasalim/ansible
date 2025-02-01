@@ -9,6 +9,7 @@
 DOTFILES="$HOME/ansible"
 DOTFILES_LOG="$HOME/.dotfiles.log"
 SSH_DIR="$HOME/.ssh"
+VAULT_SECRET="$HOME/.ansible/vault.secret"
 
 # _____         _        
 #|_   _|_ _ ___| | _____ 
@@ -147,4 +148,5 @@ if ! [[ -d "$DOTFILES" ]]; then
     _task_done
 fi
 
-ansible-playbook "$DOTFILES/main.yml" "$@"
+ansible-playbook --vault-password-file $VAULT_SECRET "$DOTFILES/main.yml" "$@"
+
