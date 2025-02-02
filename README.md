@@ -1,4 +1,4 @@
-# ansible
+# Dotfiles
 
 ## Install dotfiles
 
