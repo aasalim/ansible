@@ -147,5 +147,7 @@ if ! [[ -d "$DOTFILES" ]]; then
     _task_done
 fi
 
+ansible-galaxy install -r $DOTFILES/requirements/common.yml
+
 ansible-playbook --vault-password-file $VAULT_SECRET "$DOTFILES/main.yml" "$@"
 

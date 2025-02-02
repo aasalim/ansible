@@ -65,8 +65,8 @@ The `vault.secret` file allows you to encrypt values with `Ansible vault` and st
 To then encrypt values with your vault password use the following:
 
 ```bash
-$ ansible-vault encrypt_string --vault-password-file $HOME/.ansible/vault.secret "mynewsecret" --name "MY_SECRET_VAR"
-$ cat myfile.conf | ansible-vault encrypt_string --vault-password-file $HOME/.ansible/vault.secret --stdin-name "myfile"
+ansible-vault encrypt_string --vault-password-file $HOME/.ansible/vault.secret "mynewsecret" --name "MY_SECRET_VAR"
+cat myfile.conf | ansible-vault encrypt_string --vault-password-file $HOME/.ansible/vault.secret --stdin-name "myfile"
 ```
 
 > NOTE: This file will automatically be detected by the playbook when running `dotfiles` command to decrypt values. 
