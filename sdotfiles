@@ -111,8 +111,10 @@ function _task_done {
 function ubuntu_setup() {
 
   if ! dpkg -s git >/dev/null 2>&1; then
+    __task "Updating Ubuntu"
+    _cmd "apt update && apt upgrade"
+    _task_done
     __task "Installing Git"
-    _cmd "apt update"
     _cmd "apt install -y git"
     _task_done
   fi

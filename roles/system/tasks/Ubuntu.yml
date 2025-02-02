@@ -1,5 +1,5 @@
 ---
-- name: "{{ ansible_distribution }} : Update APT Repos and Upgrade APT Packages"
+- name: "{{ ansible_distribution }} : Update and Upgrade Package Manager"
   ansible.builtin.apt:
     update_cache: true
     upgrade: full
