@@ -36,10 +36,13 @@
         echo "SSH_AGENT_PID=$SSH_AGENT_PID" >> /tmp/ssh-agent.env
       args:
         executable: /bin/bash
-      no_log: true
+      # no_log: true
 
     - name: "{{ ansible_distribution }} : Add SSH keys to agent"
       shell: |
+        eval $(ssh-agent -s)
+        echo "SSH_AUTH_SOCK=$SSH_AUTH_SOCK" > /tmp/ssh-agent.env
+        echo "SSH_AGENT_PID=$SSH_AGENT_PID" >> /tmp/ssh-agent.env
         source /tmp/ssh-agent.env
         ssh-add {{ ansible_user_dir }}/.ssh/{{ ssh_key_item.key }}
       args:
@@ -48,10 +51,10 @@
       loop_control:
         loop_var: ssh_key_item
       when: "'pub' not in ssh_key_item.key"  # Skip .pub files
-      no_log: true
+      # no_log: true
 
     - name: "{{ ansible_distribution }} : Clean up ssh-agent environment file"
       file:
         path: /tmp/ssh-agent.env
         state: absent
-      no_log: true
+      # no_log: true
