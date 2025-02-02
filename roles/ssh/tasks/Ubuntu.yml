@@ -9,7 +9,7 @@
   when: "'pub' not in ssh_key_item.key"  # Skip .pub files
   no_log: true
 
-- name: "{{ ansible_distribution }} : Copy SSH private keys"
+- name: "{{ ansible_distribution }} : Copy SSH public keys"
   copy:
     dest: "{{ ansible_user_dir }}/.ssh/{{ ssh_key_item.key }}"
     content: "{{ ssh_key_item.value }}"
