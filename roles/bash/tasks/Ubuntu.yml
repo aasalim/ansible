@@ -1,0 +1,28 @@
+---
+- name: "Create symlink for .bashrc"
+  ansible.builtin.file:
+    src: "{{ role_path }}/files/.bashrc"
+    dest: "{{ ansible_user_dir }}/.bashrc"
+    state: link
+    force: yes
+
+- name: "Create symlink for .profile"
+  ansible.builtin.file:
+    src: "{{ role_path }}/files/.profile"
+    dest: "{{ ansible_user_dir }}/.profile"
+    state: link
+    force: yes
+
+- name: "Create symlink for bash.bashrc"
+  ansible.builtin.file:
+    src: "{{ role_path }}/files/bash.bashrc"
+    dest: "/etc/bash.bashrc"
+    state: link
+    force: yes
+
+- name: "Create symlink for profile"
+  ansible.builtin.file:
+    src: "{{ role_path }}/files/profile"
+    dest: "/etc/profile"
+    state: link
+    force: yes

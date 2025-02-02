@@ -3,6 +3,7 @@ default_roles:
   - neovim
   - ssh
   - git
+  - bash
 
 git_user_name: "Ahmed Salim"
 git_user_email: !vault |
