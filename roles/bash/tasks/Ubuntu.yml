@@ -26,3 +26,11 @@
     dest: "/etc/profile"
     state: link
     force: yes
+
+- name: "Create symlink for .bash_aliases"
+  ansible.builtin.file:
+    src: "{{ role_path }}/files/.bash_aliases"
+    dest: "{{ ansible_user_dir }}/.bash_aliases"
+    state: link
+    force: yes
+

@@ -12,12 +12,34 @@
 # ~/.bash_env:      User-specific environment variables and settings
 # ~/.bash_aliases:  User-specific Bash aliases
 # ------------------------------------------------------------------------------------------------------------------------------------------------
-# /etc/bash.bashrc
-#
-# Exit early if not running interactively
-[[ $- != *i* ]] && return
+# ~/.bash_aliases
 
-# Source user-specific ~/.bashrc if it exists
-if [ -f ~/.bashrc ]; then
-    . ~/.bashrc
-fi
+# === System Update ===
+alias update='sudo apt update && sudo apt upgrade'  # Update and upgrade system (Debian-based)
+
+# === Directory Navigation ===
+alias ..='cd ..'                         # Go up one directory
+alias ...='cd ../../'                    # Go up two directories
+alias ....='cd ../../../'                # Go up three directories
+alias ~='cd ~'                           # Go to home directory
+
+# === List directory contents ===
+alias ls='ls -lah --color=auto'          # Enable color for 'ls'
+alias ll='ls'                            # Enable color for 'ls'
+
+# === Quick File Navigation ===
+alias c='clear'                          # Clear the terminal screen
+alias h='history'                        # Show command history
+
+# === Git Aliases ===
+alias gs='git status'                    # Check Git status
+alias ga='git add'                       # Add changes
+alias gc='git commit'                    # Commit changes
+alias gco='git checkout'                 # Checkout a branch
+alias gd='git diff'                      # Show differences
+alias gP='git push origin'               # Push to origin
+alias gp='git pull'                      # Pull from the repository
+alias gb='git branch'                    # List branches
+alias gcl='git clone'                    # Clone a repository
+alias gl='git log --oneline --color --abbrev-commit --decorate --graph --date=relative' # View git logs
+
