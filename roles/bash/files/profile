@@ -16,7 +16,6 @@
 
 # Set the system language to English (US)
 export LANG="en_US.UTF-8"
-export LC_ALL="en_US.UTF-8"  # Optional: Ensure consistent locale settings
 
 # Define system-wide PATH (appending custom directories)
 export PATH="/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/sbin"

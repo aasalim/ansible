@@ -16,7 +16,8 @@
 
 # === Terminal Configuration ===
 export HISTTIMEFORMAT="%F %T "  # prepend timestamps to each command saved in your history
-umask 022                       # Files are created with permissions 644 (rw-r--r--)
+#umask 022                       # Files are created with permissions 644 (rw-r--r--)
+export BASHRC="$HOME/.bashrc"
 
 # === XDG Directories ===
 export XDG_CONFIG_HOME="$HOME/.config"
@@ -38,6 +39,13 @@ export PATH="$XDG_BIN_HOME:$PATH"
 
 # === {Program} Configuration ===
 # export CONFIG="Value"
+
+# === DOTFILES Configuration ===
+export DOTFILES="$HOME/ansible"
+
+# === TMUX Configuration ===
+export PATH="$HOME/.tmuxifier/bin:$PATH"
+export TMUXIFIER_LAYOUT_PATH="$HOME/.config/.tmux/layouts"
 
 # === VIM Configuration ===
 # Set the default editor to vim
