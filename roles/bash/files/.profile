@@ -16,7 +16,7 @@
 
 # Source ~/.bashrc if it exists (for bash users)
 if [ "$BASH" ]; then
-  if [ -f ~/.bashrc ]; then
-    . ~/.bashrc
+  if [ -f "$HOME/.bashrc" ]; then
+    . "$HOME/.bashrc"
   fi
 fi

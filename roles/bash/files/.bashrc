@@ -23,6 +23,7 @@ shopt -s histappend                 # Append to history instead of overwriting
 HISTSIZE=5000                       # Number of commands to keep in memory
 HISTFILESIZE=10000                  # Number of commands stored in ~/.bash_history
 
+
 # === Terminal Adjustments ===
 shopt -s checkwinsize  # Adjust window size after each command
 
@@ -32,6 +33,22 @@ if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
 else  
     color_prompt=no  
 fi  
+# Set the default prompt with custom colors and symbols
+BRACKET_COLOR="\[\033[38;5;35m\]"
+CLOCK_COLOR="\[\033[38;5;35m\]"
+JOB_COLOR="\[\033[38;5;33m\]"
+PATH_COLOR="\[\033[38;5;33m\]"
+LINE_BOTTOM="\342\224\200"
+LINE_BOTTOM_CORNER="\342\224\224"
+LINE_COLOR="\[\033[38;5;248m\]"
+LINE_STRAIGHT="\342\224\200"
+LINE_UPPER_CORNER="\342\224\214"
+END_CHARACTER="|"
+
+# Ensure the shell is interactive before setting the prompt
+if [[ -n "$PS1" && -t 1 ]]; then
+  export PS1="$LINE_COLOR$LINE_UPPER_CORNER$LINE_STRAIGHT$LINE_STRAIGHT$BRACKET_COLOR[$CLOCK_COLOR\t$BRACKET_COLOR]$LINE_COLOR$LINE_STRAIGHT$BRACKET_COLOR[$JOB_COLOR\j$BRACKET_COLOR]$LINE_COLOR$LINE_STRAIGHT$BRACKET_COLOR[\H:\]$PATH_COLOR\w$BRACKET_COLOR]\n$LINE_COLOR$LINE_BOTTOM_CORNER$LINE_STRAIGHT$LINE_BOTTOM$END_CHARACTER\[$(tput sgr0)\] "
+fi
 
 # === Load Custom Environment Variables (if available) ===
 if [ -f ~/.bash_env ]; then
