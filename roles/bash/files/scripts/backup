@@ -1,45 +1,44 @@
-#!/bin/bash
-
 USER='ahmed'
-# Define source and destination
-BACKUP_FOLDER="$HOME/"
+
+BACKUP_FOLDER="$HOME/backup"  # Explicitly define backup folder
 REMOTE_FOLDER="$USER@192.168.50.2:/volume1/homes/ahmed/linux/backups"
 
 
-#SOURCE=$BACKUP_FOLDER
-#DESTINATION=$REMOTE_FOLDER
 
-SOURCE=$REMOTE_FOLDER
-DESTINATION=$BACKUP_FOLDER
+# Default to dry run
+dry_run=true
 
-mkdir -p $BACKUP_FOLDER
+ # Parse arguments
+ while getopts "nP" opt; do
+     case $opt in
+         n) dry_run=true ;; # -n always dry run
+         P) dry_run=false; SOURCE="$BACKUP_FOLDER"; DESTINATION="$REMOTE_FOLDER";; # -P backup to remote
+         p) dry_run=false; SOURCE="$REMOTE_FOLDER"; DESTINATION="$BACKUP_FOLDER";; # -p restore from remote
+         *) echo "Usage: $0 [-n|-P|-p]"; exit 1 ;;
+     esac
+ done
 
-# Parse arguments
+ # Handle missing source/destination (default to local backup to remote)
+ if [[ -z "$SOURCE" ]]; then
+     SOURCE="$BACKUP_FOLDER"
+     DESTINATION="$REMOTE_FOLDER"
+ fi
 
-dry_run=false
-while getopts "n" opt; do
-  case $opt in
-    n) dry_run=true ;;
-    *) echo "Usage: $0 [-n]"; exit 1 ;;
-  esac
-done
+ mkdir -p "$BACKUP_FOLDER" # Create local backup folder if it doesn't exist
 
-# Rsync options
-OPTIONS="-avz -e ssh"
-if [ "$dry_run" = true ]; then
-  OPTIONS="$OPTIONS --dry-run"
-fi
+ # Rsync options
+ OPTIONS="-avz -e ssh"
+ if $dry_run; then
+     OPTIONS="$OPTIONS --dry-run"
+ fi
 
-# Run rsync
-echo $SOURCE
-echo $DESTINATION
-rsync $OPTIONS "$SOURCE" "$DESTINATION"
-
-# Check exit status
-if [ $? -eq 0 ]; then
-    echo "Backup completed successfully."
+# Run rsync.  Error handling improved
+echo "Source: $SOURCE"
+echo "Destination: $DESTINATION"
+rsync $OPTIONS "$SOURCE/" "$DESTINATION/" # Added trailing slashes for better rsync behavior
+if [[ $? -eq 0 ]]; then
+   echo "Backup completed successfully."
 else
-    echo "Backup encountered errors." >&2
-    exit 1
+   echo "Backup encountered errors. Check rsync output for details." >&2
+   exit 1
 fi
-
