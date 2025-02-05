@@ -2,12 +2,14 @@
 
 USER='ahmed'
 # Define source and destination
-SOURCE="$USER@192.168.50.2:/volume1/homes/ahmed"
-DESTINATION="$HOME/vimwiki"
+BACKUP_FOLDER="$HOME/backups"
+REMOTE_FOLDER="$USER@192.168.50.2:/volume1/homes/ahmed/linux/backups"
+SOURCE=$BACKUP_FOLDER
+DESTINATION=$REMOTE
 
 # Parse arguments
 
-dry_run=false
+dry_run=true
 while getopts "n" opt; do
   case $opt in
     n) dry_run=true ;;
@@ -16,7 +18,7 @@ while getopts "n" opt; do
 done
 
 # Rsync options
-OPTIONS="-avz --delete -e ssh"
+OPTIONS="-avz -e ssh"
 if [ "$dry_run" = true ]; then
   OPTIONS="$OPTIONS --dry-run"
 fi
