@@ -3,7 +3,7 @@
 USER='ahmed'
 # Define source and destination
 SOURCE="$USER@192.168.50.2:/volume1/homes/ahmed"
-DESTINATION="~/vimnotes"
+DESTINATION="$HOME/vimwiki"
 
 # Parse arguments
 
