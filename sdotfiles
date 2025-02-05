@@ -111,9 +111,9 @@ function _task_done {
 function ubuntu_setup() {
   
   # Run system update only once with proper permissions
-  __task "Updating Ubuntu"
-  _cmd "sudo apt-get update && sudo apt-get upgrade -y"
-  _task_done
+ # __task "Updating Ubuntu"
+ # _cmd "sudo apt-get update && sudo apt-get upgrade -y"
+ # _task_done
   
   # Install Git if not installed
   if ! dpkg -s git >/dev/null 2>&1; then

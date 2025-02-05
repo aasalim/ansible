@@ -4,12 +4,19 @@ USER='ahmed'
 # Define source and destination
 BACKUP_FOLDER="$HOME/backups"
 REMOTE_FOLDER="$USER@192.168.50.2:/volume1/homes/ahmed/linux/backups"
-SOURCE=$BACKUP_FOLDER
-DESTINATION=$REMOTE
+
+
+#SOURCE=$BACKUP_FOLDER
+#DESTINATION=$REMOTE_FOLDER
+
+SOURCE=$REMOTE_FOLDER
+DESTINATION=$BACKUP_FOLDER
+
+mkdir -p $BACKUP_FOLDER
 
 # Parse arguments
 
-dry_run=true
+dry_run=false
 while getopts "n" opt; do
   case $opt in
     n) dry_run=true ;;
@@ -24,6 +31,8 @@ if [ "$dry_run" = true ]; then
 fi
 
 # Run rsync
+echo $SOURCE
+echo $DESTINATION
 rsync $OPTIONS "$SOURCE" "$DESTINATION"
 
 # Check exit status

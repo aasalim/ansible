@@ -2,26 +2,48 @@
 - name: "{{ ansible_distribution }} : Dependencies"
   ansible.builtin.apt:
     name:
-      - cmake
-      - curl
-      - pkg-config
+      - ninja-build
+      - gettext
       - libtool
+      - libtool-bin
+      - autoconf
+      - automake
+      - cmake 
+      - g++ 
+      - pkg-config
       - unzip
+      - curl
+      - doxygen
+      - curl
       - ansible-lint
       - ripgrep
-
     state: present
   become: true
 
-- name: "{{ ansible_distribution }} : Add APT Repository"
-  ansible.builtin.apt_repository:
-    repo: ppa:neovim-ppa/unstable
-    state: present
-    mode: "0644"
+- name: Creates directory
+  file:
+    path: "~/install"
+    state: directory
 
-  become: true
+- name: "Clone neovim github repository"
+  git:
+    repo: "https://github.com/neovim/neovim"
+    dest: "{{ ansible_user_dir }}/install"
+    clone: yes
+    version: v0.10.3
+    update: yes
 
-- name: "{{ ansible_distribution }} : Install"
-  ansible.builtin.apt:
-    update_cache: yes
-  become: true
+
+      # If user specifies custom directory, then use extra flags
+- name: "Run make "
+  make:
+    chdir: "{{ ansible_user_dir }}/install"
+    params:
+      CMAKE_BUILD_TYPE: "RelWithDebInfo"
+  become: false 
+
+- name: "Run make install"
+  make:
+    target: "install"
+    chdir: "{{ ansible_user_dir }}/install"
+  become: "yes"
