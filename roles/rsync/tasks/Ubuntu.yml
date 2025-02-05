@@ -1,0 +1,7 @@
+---
+- name: "{{ ansible_distribution }} | Install rsync"
+  ansible.builtin.apt:
+    name:
+      - rsync
+    state: present
+  become: true

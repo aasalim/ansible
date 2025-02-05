@@ -1,0 +1,34 @@
+#!/bin/bash
+
+USER='ahmed'
+# Define source and destination
+SOURCE="$USER@192.168.50.2:/volume1/homes/ahmed"
+DESTINATION="~/vimnotes"
+
+# Parse arguments
+
+dry_run=false
+while getopts "n" opt; do
+  case $opt in
+    n) dry_run=true ;;
+    *) echo "Usage: $0 [-n]"; exit 1 ;;
+  esac
+done
+
+# Rsync options
+OPTIONS="-avz --delete -e ssh"
+if [ "$dry_run" = true ]; then
+  OPTIONS="$OPTIONS --dry-run"
+fi
+
+# Run rsync
+rsync $OPTIONS "$SOURCE" "$DESTINATION"
+
+# Check exit status
+if [ $? -eq 0 ]; then
+    echo "Backup completed successfully."
+else
+    echo "Backup encountered errors." >&2
+    exit 1
+fi
+
