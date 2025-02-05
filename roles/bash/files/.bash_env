@@ -17,7 +17,6 @@
 # === Terminal Configuration ===
 export HISTTIMEFORMAT="%F %T "  # prepend timestamps to each command saved in your history
 umask 022                       # Files are created with permissions 644 (rw-r--r--)
-export BASHRC='$HOME/.bashrc'
 
 # === XDG Directories ===
 export XDG_CONFIG_HOME="$HOME/.config"

@@ -14,9 +14,11 @@
 # ------------------------------------------------------------------------------------------------------------------------------------------------
 # ~/.bash_aliases
 
-# === System Update ===
+# === System ===
 alias update='sudo apt update && sudo apt full-upgrade -y && sudo apt autoremove -y' # Update and upgrade system (Debian-based)
 
+# === Bash ===
+alias sb='source $HOME/.bashrc'
 
 # === Directory Navigation ===
 alias ..='cd ..'                         # Go up one directory
@@ -43,6 +45,6 @@ alias gp='git pull'                      # Pull from the repository
 alias gb='git branch'                    # List branches
 alias gcl='git clone'                    # Clone a repository
 alias gr='git reflog'                    # Action history
-alias gP='git push $(git branch --show-current) origin' # Push to origin
+alias gP='git push origin'               # Push to origin
 alias gl='git log --oneline --color --abbrev-commit --decorate --graph --date=relative' # View git logs
 
