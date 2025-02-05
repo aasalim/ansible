@@ -5,15 +5,27 @@
     state: directory
     mode: '0755'
 
-- name: "Ensure ~/.local/bin exists"
+- name: "Ensure ~/.cache exists"
   ansible.builtin.file:
-    path: "{{ ansible_user_dir }}/.local/bin"
+    path: "{{ ansible_user_dir }}/.cache"
     state: directory
     mode: '0755'
 
 - name: "Ensure ~/.local/share exists"
   ansible.builtin.file:
     path: "{{ ansible_user_dir }}/.local/share"
+    state: directory
+    mode: '0755'
+
+- name: "Ensure ~/.local/state exists"
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.local/state"
+    state: directory
+    mode: '0755'
+
+- name: "Ensure ~/.local/bin exists"
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.local/bin"
     state: directory
     mode: '0755'
 
