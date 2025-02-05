@@ -1,15 +1,15 @@
 USER='ahmed'
 
-BACKUP_FOLDER="$HOME/backup"  # Explicitly define backup folder
+BACKUP_FOLDER="$HOME/backups"  
 REMOTE_FOLDER="$USER@192.168.50.2:/volume1/homes/ahmed/linux/backups"
 
-
+mkdir -p $HOME/backups
 
 # Default to dry run
 dry_run=true
 
  # Parse arguments
- while getopts "nP" opt; do
+ while getopts "nPp" opt; do
      case $opt in
          n) dry_run=true ;; # -n always dry run
          P) dry_run=false; SOURCE="$BACKUP_FOLDER"; DESTINATION="$REMOTE_FOLDER";; # -P backup to remote
@@ -20,8 +20,8 @@ dry_run=true
 
  # Handle missing source/destination (default to local backup to remote)
  if [[ -z "$SOURCE" ]]; then
-     SOURCE="$BACKUP_FOLDER"
-     DESTINATION="$REMOTE_FOLDER"
+     SOURCE="$BACKUP_FOLDER/backups"
+     DESTINATION="$REMOTE_FOLDER/backups"
  fi
 
  mkdir -p "$BACKUP_FOLDER" # Create local backup folder if it doesn't exist
