@@ -9,7 +9,7 @@ return {
         vim.g.vimwiki_list = {
             {
                 -- Here will be the path for your wiki
-                path = "~/vimwiki/",
+                path = "~/backups/vimwiki/",
                 -- The syntax for the wiki
                 syntax = "markdown",
                 ext = "md",
