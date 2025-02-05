@@ -109,21 +109,23 @@ function _task_done {
   _clear_task
 }
 function ubuntu_setup() {
-
+  
+  # Run system update only once with proper permissions
+  __task "Updating Ubuntu"
+  _cmd "sudo apt-get update && sudo apt-get upgrade -y"
+  _task_done
+  
+  # Install Git if not installed
   if ! dpkg -s git >/dev/null 2>&1; then
-    __task "Updating Ubuntu"
-    _cmd "sudo apt update && apt upgrade"
-    _task_done
     __task "Installing Git"
-    _cmd "sudo apt install -y git"
+    _cmd "sudo apt-get install -y git"
     _task_done
   fi
+
+  # Install Ansible if not installed
   if ! dpkg -s ansible >/dev/null 2>&1; then
-    __task "Updating Ubuntu"
-    _cmd "sudo apt update && apt upgrade"
-    _task_done
-    __task "Installing ansible"
-    _cmd "sudo apt install -y ansible"
+    __task "Installing Ansible"
+    _cmd "sudo apt-get install -y ansible"
     _task_done
   fi
 }
