@@ -1,4 +1,4 @@
-[shell]
+[terminal.shell]
 args = ["-d Ubuntu-24.04 --cd ~ "]
 program = "C:\\Windows\\System32\\wsl.exe"
 [env]
@@ -132,3 +132,5 @@ white   = '#acb0d0'
   # If this is `true`, the cursor will be rendered as a hollow box when the
   # window is not focused.
   unfocused_hollow= false
+
+[terminal]
