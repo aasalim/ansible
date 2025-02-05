@@ -1,0 +1,134 @@
+[shell]
+args = ["-d Ubuntu-24.04 --cd ~ "]
+program = "C:\\Windows\\System32\\wsl.exe"
+[env]
+  # TERM variable
+
+  #
+  # This value is used to set the `$TERM` environment variable for
+  # each instance of Alacritty. If it is not present, alacritty will
+  # check the local terminfo database and use 'alacritty' if it is
+  # available, otherwise 'xterm-256color' is used.
+  TERM="alacritty"
+
+[window]
+  # Background opacity
+  #
+  # Window opacity as a floating point number from `0.0` to `1.0`.
+  # The value `0.0` is completely transparent and `1.0` is opaque.
+  opacity= 1
+
+  # Window dimensions (changes require restart)
+  #
+  # Specified in number of columns/lines, not pixels.
+  # If both are `0`, this setting is ignored.
+  dimensions={columns= 0,lines= 0}
+
+  # Window padding (changes require restart)
+  #
+  # Blank space added around the window in pixels. This padding is scaled
+
+  # by DPI and the specified value is always added at both opposing sides.
+  padding={x= 2, y= 2}
+
+  # Spread additional padding evenly around the terminal content.
+  dynamic_padding= false
+
+  # Window decorations
+  #
+  # Available values:
+  # - `full`: Window with title bar and title bar buttons
+
+  # - `none`: Window without title bar, rounded corners, or drop shadow
+  # - `transparent`: Window with title bar with transparent background and title
+  #   bar buttons
+
+  # - `buttonless`: Window with title bar with transparent background and no
+  #   title bar buttons
+  # Window decorations
+  #
+  # Values for `decorations`:
+  #     - full: Borders and title bar
+  #     - none: Neither borders nor title bar
+  #     - buttonless: Title bar, transparent background and title bar buttons
+  #     - transparent: Title bar, transparent background, but no title bar buttons
+  decorations= "none"
+
+
+  # When true, alacritty starts maximized.
+  startup_mode= "Maximized"
+  # Maximum number of lines in the scrollback buffer.
+  # Specifying '0' will disable scrolling.
+[scrolling]
+
+    history= 10000
+    multiplier=3
+
+# Font configuration (changes require restart)
+[font]
+  # Normal (roman) font face
+  normal={family= "JetBrainsMono NF", style= "Regular"}
+
+  # Bold font face
+  bold={family= "JetBrainsMono NF", style= "Bold"}
+
+
+  # Italic font face
+  italic ={family= "JetBrainsMono NF", style= "Italic"}
+  bold_italic ={family= "JetBrainsMono NF", style= "Bold Italic"}
+
+  # Point size
+  size= 11.0
+
+  # Offset is the extra space around each character. `offset.y` can be thought of
+  # as modifying the line spacing, and `offset.x` as modifying the letter spacing.
+  offset={x= 0,y= 0}
+
+  # Glyph offset determines the locations of the glyphs within their cells with
+  # the default being at the bottom. Increasing `x` moves the glyph to the right,
+  # increasing `y` moves the glyph upwards.
+  glyph_offset={x= 0, y= 0}
+
+# Colors (Tokyo Night)
+# Source https//github.com/zatchheems/tokyo-night-alacritty-theme
+
+# Default colors
+[colors.primary]
+background = '#1a1b26'
+
+foreground = '#a9b1d6'
+
+# Normal colors
+[colors.normal]
+black   = '#32344a'
+red     = '#f7768e'
+green   = '#9ece6a'
+yellow  = '#e0af68'
+blue    = '#7aa2f7'
+magenta = '#ad8ee6'
+cyan    = '#449dab'
+white   = '#787c99'
+
+# Bright colors
+[colors.bright]
+black   = '#444b6a'
+red     = '#ff7a93'
+green   = '#b9f27c'
+yellow  = '#ff9e64'
+
+blue    = '#7da6ff'
+magenta = '#bb9af7'
+cyan    = '#0db9d7'
+white   = '#acb0d0'
+
+[cursor]
+  # Cursor style
+  #
+  # Values for 'style':
+  #   - ▇ Block
+  #   - _ Underline
+  #   - | Beam
+  style={shape="Block",blinking="On"}
+  # If this is `true`, the cursor will be rendered as a hollow box when the
+  # window is not focused.
+  unfocused_hollow= false
