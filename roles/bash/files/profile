@@ -14,6 +14,19 @@
 # ------------------------------------------------------------------------------------------------------------------------------------------------
 # /etc/profile
 
+# === Proxy Settings (if applicable) ===
+# Automatically set proxy if on a corporate network
+#if [[ $(hostname -d) == "fmcc.ford.com" ]]; then
+#    export http_proxy="http://internet.ford.com:83"
+#    export https_proxy=$http_proxy
+#    export ftp_proxy=$http_proxy
+#    export no_proxy="localhost,127.0.0.1,.ford.com,.local,.testing,.internal,.googleapis.com,19.0.0.0/8,136.1.0.0/16,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
+#    export FTP_PROXY=$http_proxy
+#    export HTTPS_PROXY=$http_proxy
+#    export HTTP_PROXY=$http_proxy
+#    export NO_PROXY=$no_proxy
+#fi
+
 # Set the system language to English (US)
 export LANG="en_US.UTF-8"
 
@@ -29,3 +42,4 @@ if [ -d /etc/profile.d ]; then
   done
   unset i
 fi
+

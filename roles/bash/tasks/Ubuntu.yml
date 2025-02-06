@@ -56,7 +56,7 @@
     dest: "/etc/bash.bashrc"
     state: link
     force: yes
-  become: true
+  become: yes
 
 - name: "Create symlink for profile"
   ansible.builtin.file:
@@ -64,7 +64,7 @@
     dest: "/etc/profile"
     state: link
     force: yes
-  become: true
+  become: yes
 
 - name: "Create symlink for .bash_aliases"
   ansible.builtin.file:

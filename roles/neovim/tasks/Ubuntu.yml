@@ -20,24 +20,24 @@
     state: present
   become: true
 
-- name: Creates directory
+- name: "Create downloads directory"
   file:
-    path: "~/install"
+    path: "~/Downloads/neovim"
     state: directory
 
 - name: "Clone neovim github repository"
   git:
     repo: "https://github.com/neovim/neovim"
-    dest: "{{ ansible_user_dir }}/install"
+    dest: "{{ ansible_user_dir }}/Downloads/neovim"
     clone: yes
     version: v0.10.3
     update: yes
 
 
       # If user specifies custom directory, then use extra flags
-- name: "Run make "
+- name: "Run make"
   make:
-    chdir: "{{ ansible_user_dir }}/install"
+    chdir: "{{ ansible_user_dir }}/Downloads/neovim"
     params:
       CMAKE_BUILD_TYPE: "RelWithDebInfo"
   become: false 
@@ -45,5 +45,5 @@
 - name: "Run make install"
   make:
     target: "install"
-    chdir: "{{ ansible_user_dir }}/install"
+    chdir: "{{ ansible_user_dir }}/Downloads/neovim"
   become: "yes"
