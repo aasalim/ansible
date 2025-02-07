@@ -1,4 +1,5 @@
 default_roles:
+  - python
   - system
   - neovim
   - ssh
@@ -6,6 +7,7 @@ default_roles:
   - bash
   - tmux
   - rsync
+  - lazygit
 
 git_user_name: "Ahmed Salim"
 git_user_email: !vault |

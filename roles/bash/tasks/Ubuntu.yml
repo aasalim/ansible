@@ -66,6 +66,22 @@
     force: yes
   become: yes
 
+- name: "Create symlink for resolv.conf"
+  ansible.builtin.file:
+    src: "{{ role_path }}/files/resolv.conf"
+    dest: "/etc/resolv.conf"
+    state: link
+    force: yes
+  become: yes
+
+- name: "Create symlink for wsl.conf"
+  ansible.builtin.file:
+    src: "{{ role_path }}/files/wsl.conf"
+    dest: "/etc/wsl.conf"
+    state: link
+    force: yes
+  become: yes
+
 - name: "Create symlink for .bash_aliases"
   ansible.builtin.file:
     src: "{{ role_path }}/files/.bash_aliases"
