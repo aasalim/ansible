@@ -118,6 +118,7 @@ function ubuntu_setup() {
   # Install Git if not installed
   if ! dpkg -s git >/dev/null 2>&1; then
     __task "Installing Git"
+    _cmd "sudo apt-get update && sudo apt-get upgrade -y"
     _cmd "sudo apt-get install -y git"
     _task_done
   fi
@@ -125,6 +126,7 @@ function ubuntu_setup() {
   # Install Ansible if not installed
   if ! dpkg -s ansible >/dev/null 2>&1; then
     __task "Installing Ansible"
+    _cmd "sudo apt-get update && sudo apt-get upgrade -y"
     _cmd "sudo apt-get install -y ansible"
     _task_done
   fi
