@@ -89,7 +89,7 @@ eval $(ssh-agent -s) && ssh-add ~/.ssh/dotfiles
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/aasalim/ansible/main/sdotfiles)" && eval $(ssh-agent -s) && ssh-add ~/.ssh/dotfiles
 ```
 
-
+git@github.com:aasalim/ansible.git
 
 
 
