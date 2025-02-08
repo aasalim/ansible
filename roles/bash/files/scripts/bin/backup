@@ -21,7 +21,7 @@ dry_run=true
  # Handle missing source/destination (default to local backup to remote)
  if [[ -z "$SOURCE" ]]; then
      SOURCE="$BACKUP_FOLDER/backups"
-     DESTINATION="$REMOTE_FOLDER/backups"
+     DESTINATION="$REMOTE_FOLDER/"
  fi
 
  mkdir -p "$BACKUP_FOLDER" # Create local backup folder if it doesn't exist
