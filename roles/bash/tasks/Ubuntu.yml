@@ -29,12 +29,20 @@
     state: directory
     mode: '0755'
 
-- name: "{{ role_name }} | Create symlink for scripts"
+- name: "{{ role_name }} | Create symlink for scripts/bin"
   ansible.builtin.file:
-    src: "{{ role_path }}/files/scripts"
+    src: "{{ role_path }}/files/scripts/bin"
     dest: "{{ ansible_user_dir }}/.local/bin"
     state: link
     force: true
+
+- name: "{{ role_name }} | Create symlink for drproxy"
+  ansible.builtin.file:
+    src: "{{ role_path }}/files/scripts/sbin/drproxy"
+    dest: "/usr/local/bin/drproxy"
+    state: link
+    force: true
+  become: true
 
 - name: "{{ role_name }} | Create symlink for .bashrc"
   ansible.builtin.file:

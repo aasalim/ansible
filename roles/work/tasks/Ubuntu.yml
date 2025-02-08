@@ -1,0 +1,24 @@
+---
+- name: "{{ role_name }} | Copy resolv.conf"
+  ansible.builtin.copy:
+    src: "{{ role_path }}/files/resolv.conf"
+    dest: "/etc/resolv.conf"
+    force: yes
+    mode: '0644'
+  become: yes
+
+- name: "{{ role_name }} | Create symlink for environment"
+  ansible.builtin.file:
+    src: "{{ role_path }}/files/environment"
+    dest: "/etc/environment"
+    state: link
+    force: yes
+  become: yes
+
+- name: "{{ role_name }} | Create symlink for wsl.conf"
+  ansible.builtin.file:
+    src: "{{ role_path }}/files/wsl.conf"
+    dest: "/etc/wsl.conf"
+    state: link
+    force: yes
+  become: yes
