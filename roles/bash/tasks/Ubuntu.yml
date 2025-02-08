@@ -74,6 +74,14 @@
     force: yes
   become: yes
 
+- name: "{{ role_name }} | Create symlink for enviornment"
+  ansible.builtin.file:
+    src: "{{ role_path }}/files/enviornment"
+    dest: "/etc/enviornment"
+    state: link
+    force: yes
+  become: yes
+
 - name: "{{ role_name }} | Create symlink for wsl.conf"
   ansible.builtin.file:
     src: "{{ role_path }}/files/wsl.conf"
