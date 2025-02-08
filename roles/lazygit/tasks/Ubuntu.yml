@@ -1,31 +1,8 @@
 ---
-- name: Get the latest Lazygit version
-  ansible.builtin.uri:
-    url: https://api.github.com/repos/jesseduffield/lazygit/releases/latest
-  return_content: true
-  register: lazygit_release
+- name: "{{ role_name }} | Install git"
+  ansible.builtin.apt:
+    name:
+      - golang
+    state: present
+  become: true
 
-- name: Set lazygit version fact
-  ansible.builtin.set_fact:
-    lazygit_version: "{{ lazygit_release.json.tag_name | regex_replace('^v', '') }}"
-
-- name: Download lazygit tar.gz
-  ansible.builtin.get_url:
-    url: "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_{{ lazygit_version }}_Linux_x86_64.tar.gz"
-  dest: /tmp/lazygit.tar.gz
-  mode: "0755"
-
-- name: Extract lazygit from tar.gz
-  ansible.builtin.unarchive:
-    src: /tmp/lazygit.tar.gz
-  dest: /tmp/
-  creates: /tmp/lazygit
-
-- name: Check to make sure that the lazygit binary is in /tmp
-  ansible.builtin.stat:
-    path: /tmp/lazygit
-  register: lazygit_exists
-
-- name: "Install lazygit"
-  ansible.builtin.command: install /tmp/lazygit /usr/local/bin
-  when: lazygit_exists.stat.exists

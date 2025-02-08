@@ -1,7 +1,80 @@
 ---
-- name: "Git | {{ ansible_distribution }} | Install git"
+- name: "{{ role_name }} | Install git"
   ansible.builtin.apt:
     name:
       - git
     state: present
   become: true
+
+- name: "{{ role_name }} | Set diff.colorMoved"
+  community.general.git_config:
+    name: diff.colorMoved
+    scope: global
+    value: zebra
+
+- name: "{{ role_name }} | Set fetch.prune"
+  community.general.git_config:
+    name: fetch.prune
+    scope: global
+    value: true
+
+- name: "{{ role_name }} | Set init.defaultBranch"
+  community.general.git_config:
+    name: init.defaultBranch
+    scope: global
+    value: main
+
+- name: "{{ role_name }} | Set pull.ff"
+  community.general.git_config:
+    name: pull.ff
+    scope: global
+    value: only
+
+- name: "{{ role_name }} | Set pull.rebase"
+  community.general.git_config:
+    name: pull.rebase
+    scope: global
+    value: true
+
+- name: "{{ role_name }} | Set rebase.autoStash"
+  community.general.git_config:
+    name: rebase.autoStash
+    scope: global
+    value: true
+
+- name: "{{ role_name }} | Set user.email"
+  community.general.git_config:
+    name: user.email
+    scope: global
+    value: "{{ git_user_email }}"
+  no_log: true
+
+- name: "{{ role_name }} | Set user.name"
+  community.general.git_config:
+    name: user.name
+    scope: global
+    value: "{{ git_user_name }}"
+
+- name: "{{ role_name }} | Set user.signingkey"
+  community.general.git_config:
+    name: user.signingkey
+    scope: global
+    value: "{{ ansible_user_dir }}/.ssh/dotfiles.pub"
+
+- name: "{{ role_name }} | Set gpg.format"
+  community.general.git_config:
+    name: gpg.format
+    scope: global
+    value: ssh
+
+- name: "{{ role_name }} | Set commit.gpgsign"
+  community.general.git_config:
+    name: commit.gpgsign
+    scope: global
+    value: true
+
+- name: "{{ role_name }} | Set tag.gpgsign"
+  community.general.git_config:
+    name: tag.gpgsign
+    scope: global
+    value: true

@@ -1,56 +1,56 @@
 ---
-- name: "Ensure ~/.config exists"
+- name: "{{ role_name }} | Ensure ~/.config exists"
   ansible.builtin.file:
     path: "{{ ansible_user_dir }}/.config"
     state: directory
     mode: '0755'
 
-- name: "Ensure ~/.cache exists"
+- name: "{{ role_name }} | Ensure ~/.cache exists"
   ansible.builtin.file:
     path: "{{ ansible_user_dir }}/.cache"
     state: directory
     mode: '0755'
 
-- name: "Ensure ~/.local/share exists"
+- name: "{{ role_name }} | Ensure ~/.local/share exists"
   ansible.builtin.file:
     path: "{{ ansible_user_dir }}/.local/share"
     state: directory
     mode: '0755'
 
-- name: "Ensure ~/.local/state exists"
+- name: "{{ role_name }} | Ensure ~/.local/state exists"
   ansible.builtin.file:
     path: "{{ ansible_user_dir }}/.local/state"
     state: directory
     mode: '0755'
 
-- name: "Ensure ~/.local/bin exists"
+- name: "{{ role_name }} | Ensure ~/.local/bin exists"
   ansible.builtin.file:
     path: "{{ ansible_user_dir }}/.local/bin"
     state: directory
     mode: '0755'
 
-- name: "Create symlink for scripts"
+- name: "{{ role_name }} | Create symlink for scripts"
   ansible.builtin.file:
     src: "{{ role_path }}/files/scripts"
     dest: "{{ ansible_user_dir }}/.local/bin"
     state: link
     force: true
 
-- name: "Create symlink for .bashrc"
+- name: "{{ role_name }} | Create symlink for .bashrc"
   ansible.builtin.file:
     src: "{{ role_path }}/files/.bashrc"
     dest: "{{ ansible_user_dir }}/.bashrc"
     state: link
     force: yes
 
-- name: "Create symlink for .profile"
+- name: "{{ role_name }} | Create symlink for .profile"
   ansible.builtin.file:
     src: "{{ role_path }}/files/.profile"
     dest: "{{ ansible_user_dir }}/.profile"
     state: link
     force: yes
 
-- name: "Create symlink for bash.bashrc"
+- name: "{{ role_name }} | Create symlink for bash.bashrc"
   ansible.builtin.file:
     src: "{{ role_path }}/files/bash.bashrc"
     dest: "/etc/bash.bashrc"
@@ -58,7 +58,7 @@
     force: yes
   become: yes
 
-- name: "Create symlink for profile"
+- name: "{{ role_name }} | Create symlink for profile"
   ansible.builtin.file:
     src: "{{ role_path }}/files/profile"
     dest: "/etc/profile"
@@ -66,7 +66,7 @@
     force: yes
   become: yes
 
-- name: "Create symlink for resolv.conf"
+- name: "{{ role_name }} | Create symlink for resolv.conf"
   ansible.builtin.file:
     src: "{{ role_path }}/files/resolv.conf"
     dest: "/etc/resolv.conf"
@@ -74,7 +74,7 @@
     force: yes
   become: yes
 
-- name: "Create symlink for wsl.conf"
+- name: "{{ role_name }} | Create symlink for wsl.conf"
   ansible.builtin.file:
     src: "{{ role_path }}/files/wsl.conf"
     dest: "/etc/wsl.conf"
@@ -82,14 +82,14 @@
     force: yes
   become: yes
 
-- name: "Create symlink for .bash_aliases"
+- name: "{{ role_name }} | Create symlink for .bash_aliases"
   ansible.builtin.file:
     src: "{{ role_path }}/files/.bash_aliases"
     dest: "{{ ansible_user_dir }}/.bash_aliases"
     state: link
     force: yes
 
-- name: "Create symlink for .bash_env"
+- name: "{{ role_name }} | Create symlink for .bash_env"
   ansible.builtin.file:
     src: "{{ role_path }}/files/.bash_env"
     dest: "{{ ansible_user_dir }}/.bash_env"
