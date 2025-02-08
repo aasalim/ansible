@@ -59,3 +59,6 @@ fi
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
+
+# === Load Dotfiles SSH keys  ===
+eval $(ssh-agent -s) >/dev/null && ssh-add ~/.ssh/dotfiles 2>/dev/null
