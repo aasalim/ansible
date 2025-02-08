@@ -67,17 +67,17 @@
   become: yes
 
 - name: "{{ role_name }} | Create symlink for resolv.conf"
-  ansible.builtin.file:
+  ansible.builtin.copy:
     src: "{{ role_path }}/files/resolv.conf"
     dest: "/etc/resolv.conf"
-    state: link
     force: yes
+    mode: '0644'
   become: yes
 
-- name: "{{ role_name }} | Create symlink for enviornment"
+- name: "{{ role_name }} | Create symlink for environment"
   ansible.builtin.file:
-    src: "{{ role_path }}/files/enviornment"
-    dest: "/etc/enviornment"
+    src: "{{ role_path }}/files/environment"
+    dest: "/etc/environment"
     state: link
     force: yes
   become: yes

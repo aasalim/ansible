@@ -166,14 +166,13 @@ fi
 if ! [[ -d "$DOTFILES" ]]; then
     __task "Cloning Dotfiles repository"
     _cmd "git clone --quiet https://github.com/aasalim/ansible.git $DOTFILES"
+    _cmd "ansible-galaxy install -r $DOTFILES/requirements/common.yml"
     _task_done
 else
     __task "Updating repository"
-    _cmd "git -C $DOTFILES pull --quiet"
+    #_cmd "git -C $DOTFILES pull --quiet"
     _task_done
 fi
-
-ansible-galaxy install -r $DOTFILES/requirements/common.yml
 
 ansible-playbook --vault-password-file $VAULT_SECRET "$DOTFILES/main.yml" "$@"
 
