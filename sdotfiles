@@ -114,12 +114,20 @@ function ubuntu_setup() {
  # __task "Updating Ubuntu"
  # _cmd "sudo apt-get update && sudo apt-get upgrade -y"
  # _task_done
-  
+
   # Install Git if not installed
   if ! dpkg -s git >/dev/null 2>&1; then
     __task "Installing Git"
     _cmd "sudo apt-get update && sudo apt-get upgrade -y"
     _cmd "sudo apt-get install -y git"
+    _task_done
+  fi
+
+  # Install python3-watchdog if not installed
+  if ! dpkg -s python3-watchdog >/dev/null 2>&1; then
+    __task "Installing python3-watchdog"
+    _cmd "sudo apt-get update && sudo apt-get upgrade -y"
+    _cmd "sudo apt-get install -y python3-watchdog"
     _task_done
   fi
 
