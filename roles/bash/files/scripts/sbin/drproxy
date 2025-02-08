@@ -26,8 +26,9 @@ END
 cat > /etc/environment <<END
 PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
 END
-
+windows_ip=$(ip route | grep default | awk '{print $3}')
 cat > /etc/resolv.conf <<END
+nameserver $windows_ip
 END
         ;;
 esac

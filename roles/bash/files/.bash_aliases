@@ -48,9 +48,12 @@ alias gr='git reflog'                    # Action history
 alias gP='git push origin'               # Push to origin
 alias gl='git log --oneline --color --abbrev-commit --decorate --graph --date=relative' # View git logs
 
-
 # === Vim Aliases ===
 alias vim='nvim'
 alias vi='nvim'
 alias wiki='nvim -c VimwikiIndex'
 alias notes='nvim -c VimwikiDiaryIndex'
+
+# === VPN Aliases ===
+alias vpnoff='sudo drproxy off'
+alias vpnon='sudo drproxy on'
