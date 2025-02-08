@@ -1,5 +1,10 @@
 ---
-- name: "{{ ansible_distribution }} : Dependencies"
+- name: "{{ role_name }} | Check for neovim"
+  ansible.builtin.stat:
+    path: /usr/local/bin/nvim
+  register: neovim_check
+
+- name: "{{ role_name }} | Dependencies"
   ansible.builtin.apt:
     name:
       - ninja-build
@@ -19,31 +24,56 @@
       - ripgrep
     state: present
   become: true
+  when: not neovim_check.stat.exists
 
-- name: "Create downloads directory"
-  file:
+
+- name: "{{ role_name }} | Create downloads directory"
+  ansible.builtin.file:
     path: "~/Downloads/neovim"
     state: directory
+  when: not neovim_check.stat.exists
 
-- name: "Clone neovim github repository"
+- name: "{{ role_name }} | Clone neovim github repository"
   git:
     repo: "https://github.com/neovim/neovim"
     dest: "{{ ansible_user_dir }}/Downloads/neovim"
     clone: yes
     version: v0.10.3
     update: yes
+  when: not neovim_check.stat.exists
 
 
-      # If user specifies custom directory, then use extra flags
-- name: "Run make"
+  # If user specifies custom directory, then use extra flags
+- name: "{{ role_name }} | Run make"
   make:
     chdir: "{{ ansible_user_dir }}/Downloads/neovim"
     params:
       CMAKE_BUILD_TYPE: "RelWithDebInfo"
   become: false 
+  when: not neovim_check.stat.exists
 
-- name: "Run make install"
+- name: "{{ role_name }} | Run make install"
   make:
     target: "install"
     chdir: "{{ ansible_user_dir }}/Downloads/neovim"
-  become: "yes"
+  become: true
+  when: not neovim_check.stat.exists
+
+- name: "{{ role_name }} | Check nvim config directory"
+  ansible.builtin.stat:
+    path: "{{ ansible_user_dir }}/.config/nvim"
+  register: neovim_config_check
+
+- name: "{{ role_name }} | Create nvim config directory"
+  ansible.builtin.file:
+    mode: "0755"
+    path: "{{ ansible_user_dir }}/.config/nvim"
+    state: directory
+  when: not neovim_config_check.stat.exists
+
+- name: "{{ role_name }} | Update symlinks to nvim config"
+  ansible.builtin.file:
+    src: "{{ role_path }}/files"
+    dest: "{{ ansible_user_dir }}/.config/nvim"
+    state: link
+    force: true
