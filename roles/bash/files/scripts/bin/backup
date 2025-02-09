@@ -20,7 +20,7 @@ dry_run=true
 
  # Handle missing source/destination (default to local backup to remote)
  if [[ -z "$SOURCE" ]]; then
-     SOURCE="$BACKUP_FOLDER/backups"
+     SOURCE="$BACKUP_FOLDER/"
      DESTINATION="$REMOTE_FOLDER/"
  fi
 
