@@ -1,4 +1,5 @@
 return {
+    enabled = false,
     -- The plugin location on GitHub
     "vimwiki/vimwiki",
     enabled=true,
