@@ -1,8 +1,12 @@
 ---
-- name: "{{ role_name }} | Install git"
-  ansible.builtin.apt:
-    name:
-      - golang
-    state: present
+- name: Downloading and extracting lazygit
+  ansible.builtin.unarchive:
+    src: "https://github.com/jesseduffield/lazygit/releases/download/v0.45.2/lazygit_0.45.2_Linux_x86_64.tar.gz"
+    dest: "/usr/local/bin"
+    extra_opts:
+      - lazygit
+    remote_src: yes
+    owner: "root"
+    group: "root"
+    mode: "0755"
   become: true
-
