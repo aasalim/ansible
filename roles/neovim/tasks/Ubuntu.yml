@@ -22,6 +22,7 @@
       - curl
       - ansible-lint
       - ripgrep
+      - luarocks
     state: present
   become: true
   when: not neovim_check.stat.exists

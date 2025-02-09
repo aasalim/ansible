@@ -1,11 +1,6 @@
 return {
   enabled = true,
-  -- The plugin location on GitHub
   "vimwiki/vimwiki",
-  enabled=true,
-  -- The keys that trigger the plugin
-
-  -- The configuration for the plugin
   init = function()
     vim.g.vimwiki_list = {
       {
@@ -17,7 +12,7 @@ return {
       },
     }
     vim.g.vimwiki_global_ext = 0
-    --    vim.g.vimwiki_ext2syntax = { }
+    -- vim.g.vimwiki_ext2syntax = { }
   end,
   config = function()
 

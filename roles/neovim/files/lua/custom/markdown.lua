@@ -1,74 +1,35 @@
-require("markdown").setup({
-        -- Disable all keymaps by setting mappings field to 'false'.
-        -- Selectively disable keymaps by setting corresponding field to 'false'.
-        mappings = {
-        inline_surround_toggle = "gs", -- (string|boolean) toggle inline style
-        inline_surround_toggle_line = "gss", -- (string|boolean) line-wise toggle inline style
-        inline_surround_delete = "ds", -- (string|boolean) delete emphasis surrounding cursor
-        inline_surround_change = "cs", -- (string|boolean) change emphasis surrounding cursor
-        link_add = "gl", -- (string|boolean) add link
-        link_follow = "gx", -- (string|boolean) follow link
-        go_curr_heading = "]c", -- (string|boolean) set cursor to current section heading
-        go_parent_heading = "]p", -- (string|boolean) set cursor to parent section heading
-        go_next_heading = "]]", -- (string|boolean) set cursor to next section heading
-        go_prev_heading = "[[", -- (string|boolean) set cursor to previous section heading
-        },
-        inline_surround = {
+require("markdown-toggle").setup {
+  -- If true, the auto-setup for the default keymaps is enabled
+  use_default_keymaps = true,
+  -- The keymaps are valid only for these filetypes
+  filetypes = { "markdown", "markdown.mdx" },
 
-        -- For the emphasis, strong, strikethrough, and code fields:
-        -- * 'key': used to specify an inline style in toggle, delete, and change operations
-        -- * 'txt': text inserted when toggling or changing to the corresponding inline style
+  -- The list marks table used in cycle-mode (list_table[1] is used as the default list-mark)
+  list_table = { "-", "+", "*", "=" },
+  -- Cycle the marks in user-defined table when toggling lists
+  cycle_list_table = false,
 
-        emphasis = {
-            key = "i",
-            txt = "*",
-        },
-        strong = {
-            key = "b",
+  -- The checkbox marks table used in cycle-mode (box_table[1] is used as the default checked-state)
+  box_table = { "x", "~", "!", ">" },
+  -- Cycle the marks in user-defined table when toggling checkboxes
+  cycle_box_table = false,
+  -- A bullet list is toggled before turning into a checkbox (similar to how it works in Obsidian).
+  list_before_box = false,
 
-            txt = "**",
+  -- The heading marks table used in `markdown-toggle.heading`
+  heading_table = { "#", "##", "###", "####", "#####" },
 
-        },
-        strikethrough = {
-            key = "s",
+  -- Skip blank lines and headings in Visual mode (except for `quote()`)
+  enable_blankhead_skip = true,
+  -- Insert an indented quote for new lines within quoted text
+  enable_inner_indent = false,
+  -- Toggle only unmarked lines first
+  enable_unmarked_only = true,
+  -- Automatically continue lists on new lines
+  enable_autolist = true,
+  -- Maintain checkbox state when continuing lists
+  enable_auto_samestate = false,
+  -- Dot-repeat for toggle functions in Normal mode
+  enable_dot_repeat = true,
+}
 
-            txt = "~~",
-
-        },
-        code = {
-            key = "c",
-            txt = "`",
-        },
-        },
-        link = {
-            paste = {
-                enable = true, -- whether to convert URLs to links on paste
-            },
-        },
-        toc = {
-            -- Comment text to flag headings/sections for omission in table of contents.
-                omit_heading = "toc omit heading",
-            omit_section = "toc omit section",
-            -- Cycling list markers to use in table of contents.
-                -- Use '.' and ')' for ordered lists.
-                markers = { "-" },
-        },
-        -- Hook functions allow for overriding or extending default behavior.
-            -- Called with a table of options and a fallback function with default behavior.
-            -- Signature: fun(opts: table, fallback: fun())
-            hooks = {
-                -- Called when following links. Provided the following options:
-                    -- * 'dest' (string): the link destination
-
-                                          -- * 'use_default_app' (boolean|nil): whether to open the destination with default application
-                                                                                --   (refer to documentation on <Plug> mappings for explanation of when this option is used)
-                                                                                follow_link = nil,
-            },
-        on_attach = function(bufnr)
-            local map = vim.keymap.set
-            local opts = { buffer = bufnr }
-
-        map({'i','n'}, '<M-c>', function() vim.cmd('MDTaskToggle')end, opts)
-
-            end,
-})

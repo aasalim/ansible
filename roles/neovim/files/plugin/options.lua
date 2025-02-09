@@ -18,20 +18,24 @@ vim.opt.linebreak=true
 vim.opt.ignorecase=true
 vim.opt.smartcase=false
 
+-- Terminal
+vim.opt.compatible=false
+vim.opt.showcmd=true
+vim.opt.cmdheight=1
+vim.opt.showmode=true
+local has_true_color = vim.fn.has('termguicolors') and vim.fn.has('gui_running')
+if has_true_color then
+  vim.o.termguicolors = true
+end
+
 -- General
 vim.opt.swapfile=false
 vim.opt.backup=false
-vim.opt.compatible=false
-vim.opt.fileencoding="utf-8"
 vim.opt.pumheight=10
-vim.opt.showmode=true
-vim.opt.termguicolors=true
 vim.opt.splitbelow=true
 vim.opt.splitright=true
 vim.opt.history=500
 vim.opt.ruler=true
-vim.opt.showcmd=true
-vim.opt.cmdheight=1
 vim.opt.hid=true
 vim.opt.hlsearch=true
 vim.opt.incsearch=true
