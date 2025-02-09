@@ -35,6 +35,7 @@ alias c='clear'                          # Clear the terminal screen
 alias h='history'                        # Show command history
 
 # === Git Aliases ===
+alias g='lazygit'                        # Open LazyGit
 alias gs='git status'                    # Check Git status
 alias ga='git add'                       # Add changes
 alias gc='git commit'                    # Commit changes
