@@ -39,7 +39,7 @@ export DOTFILES="$HOME/ansible"
 
 # === TMUX Configuration ===
 export PATH="$HOME/.tmuxifier/bin:$PATH"
-# export TMUX="$HOME/.config/tmux/tmux.conf"
+#export TMUX="$HOME/.config/tmux/.tmux.conf"
 export TMUXIFIER_LAYOUT_PATH="$HOME/.config/tmux/layouts"
 
 # === neo(vim) Configuration ===

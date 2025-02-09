@@ -29,3 +29,10 @@
     dest: "{{ ansible_user_dir }}/.config/tmux"
     state: link
     force: true
+
+- name: "{{ role_name }} | Copy .config/.tmux.conf"
+  ansible.builtin.file:
+   src: "{{ role_path }}/files/.tmux.conf"
+   dest: "{{ ansible_user_dir }}/.tmux.conf"
+   state: link
+   force: yes
