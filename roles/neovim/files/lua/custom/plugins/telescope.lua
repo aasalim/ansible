@@ -6,10 +6,10 @@
 --  |_|\___|_|\___||___/\___\___/| .__/ \___|
 --                               |_|         
 return {
-    enabled = false,
-    'nvim-telescope/telescope.nvim', tag = '0.1.8',
-    dependencies = { 'nvim-lua/plenary.nvim' },
-    config = function()
-        require("custom.telescope")
-    end
+  enabled = true,
+  'nvim-telescope/telescope.nvim', tag = '0.1.8',
+  dependencies = { 'nvim-lua/plenary.nvim' },
+  config = function()
+    require("custom.telescope")
+  end
 }

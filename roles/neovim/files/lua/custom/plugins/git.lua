@@ -8,7 +8,7 @@
 return 
   {
     {
-    enabled = false,
+      enabled = true,
       "kdheepak/lazygit.nvim",
       lazy = true,
       cmd = {
