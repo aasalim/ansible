@@ -15,7 +15,6 @@ vim.keymap.set('n', '<Leader>~', function()
     local filename = vim.fn.expand('%:t')             -- Get filename with extension
     local guard = filename:gsub('%.', '_'):upper()    -- Process into guard macro
 
-
     -- Insert lines at appropriate positions
     vim.fn.append(0, {'#ifndef ' .. guard})
     vim.fn.append(1, {'#define ' .. guard})

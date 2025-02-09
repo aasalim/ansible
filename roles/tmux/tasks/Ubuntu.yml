@@ -15,12 +15,12 @@
 - name: "{{ role_name }} | Install TPM"
   ansible.builtin.git:
     repo: https://github.com/tmux-plugins/tpm
-    dest: ~/.tmux/plugins/tpm
+    dest: "{{ ansible_user_dir }}/.tmux/plugins/tpm"
 
 - name: "{{ role_name }} | Install tmuxifier"
   ansible.builtin.git:
     repo: https://github.com/jimeh/tmuxifier
-    dest: ~/.tmuxifier
+    dest: "{{ ansible_user_dir }}/.tmuxifier"
   when: not tmux_check.stat.exists
 
 - name: "{{ role_name }} | Create symlink to config folder"

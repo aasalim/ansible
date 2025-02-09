@@ -52,7 +52,7 @@ alias gl='git log --oneline --color --abbrev-commit --decorate --graph --date=re
 # === Vim Aliases ===
 alias vim='nvim'
 alias vi='nvim'
-alias wiki='nvim -c VimwikiIndex'
+alias wiki='cd $HOME/backups/vimwiki;nvim -c VimwikiIndex'
 alias notes='nvim -c VimwikiDiaryIndex'
 
 # === VPN Aliases ===
