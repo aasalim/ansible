@@ -1,5 +1,5 @@
 ---
-- name: "{{ ansible_distribution }} : Update and Upgrade Package Manager"
+- name: "{{ role_name }} | Update and Upgrade Package Manager"
   ansible.builtin.apt:
     update_cache: true
     upgrade: full
@@ -7,7 +7,7 @@
     autoclean: true
   become: true
 
-- name: "{{ ansible_distribution }} : Install"
+- name: "{{ role_name }} | Install"
   ansible.builtin.apt:
     name:
       - neovim

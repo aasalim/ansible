@@ -1,7 +1,31 @@
 ---
-- name: "{{ ansible_distribution }} | Install tmux"
+- name: "{{ role_name }} | Check for tmux"
+  ansible.builtin.stat:
+    path: /usr/bin/tmux
+  register: tmux_check
+
+- name: "{{ role_name }} | Install tmux"
   ansible.builtin.apt:
     name:
       - tmux
     state: present
   become: true
+  when: not tmux_check.stat.exists
+
+- name: "{{ role_name }} | Install TPM"
+  ansible.builtin.git:
+    repo: https://github.com/tmux-plugins/tpm
+    dest: ~/.tmux/plugins/tpm
+
+- name: "{{ role_name }} | Install tmuxifier"
+  ansible.builtin.git:
+    repo: https://github.com/jimeh/tmuxifier
+    dest: ~/.tmuxifier
+  when: not tmux_check.stat.exists
+
+- name: "{{ role_name }} | Create symlink to config folder"
+  ansible.builtin.file:
+    src: "{{ role_path }}/files"
+    dest: "{{ ansible_user_dir }}/.config/tmux"
+    state: link
+    force: true

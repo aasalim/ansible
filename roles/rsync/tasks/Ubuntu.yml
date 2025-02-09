@@ -1,5 +1,5 @@
 ---
-- name: "{{ ansible_distribution }} | Install rsync"
+- name: "{{ role_name }} | Install rsync"
   ansible.builtin.apt:
     name:
       - rsync
