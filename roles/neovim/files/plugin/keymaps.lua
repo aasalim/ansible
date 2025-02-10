@@ -3,18 +3,9 @@ local k = vim.keycode
 
 set("n", "<leader><leader>x", "<cmd>.lua<CR>", { desc = "Execute the current line" })
 set("n", "<leader>r", "<cmd>source %<CR>", { desc = "Execute the current file" })
+vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
--- Toggle hlsearch if it's on, otherwise just do "enter"
-set("n", "<CR>", function()
-  ---@diagnostic disable-next-line: undefined-field
-  if vim.v.hlsearch == 1 then
-
-    vim.cmd.nohl()
-    return ""
-  else
-    return k "<CR>"
-  end
-end, { expr = true })
+vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- These mappings control the size of splits (height/width)
 set("n", "<M-,>", "<c-w>5<")

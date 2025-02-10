@@ -23,7 +23,6 @@ vim.opt.compatible=false
 vim.opt.showcmd=true
 vim.opt.cmdheight=1
 vim.opt.showmode=true
-vim.opt.fileformats='unix'
 
 local has_true_color = vim.fn.has('termguicolors') and vim.fn.has('gui_running')
 if has_true_color then
@@ -46,8 +45,19 @@ vim.opt.showmatch=true
 vim.opt.errorbells=false
 vim.opt.visualbell=false
 vim.opt.cursorline=true
-vim.opt.clipboard="unnamedplus"
+vim.opt.breakindent = true
+vim.opt.undofile = true
+vim.opt.signcolumn = 'yes'
+vim.opt.updatetime = 250
+vim.opt.timeoutlen = 300
+vim.opt.mouse = 'a'
+vim.opt.list = true
+vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+vim.opt.inccommand = 'split'
 
+vim.schedule(function()
+  vim.opt.clipboard = 'unnamedplus'
+end)
 --  ____ _                    _              _____     _         
 -- / ___| |__   __ _ _ __ ___| |_ ___ _ __  |_   _|_ _| |__  ___ 
 --| |   | '_ \ / _` | '__/ __| __/ _ \ '__|   | |/ _` | '_ \/ __|

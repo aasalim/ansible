@@ -23,7 +23,7 @@ if initialize_session "rice"; then
     run_cmd "nvim $BASHRC"
 
     new_window "tmux"
-    run_cmd "nvim ~/.config/tmux/tmux.conf"
+    run_cmd "nvim ~/.tmux.conf"
     split_h 50
     run_cmd "cd ~/ && clear"
     select_pane 2  
