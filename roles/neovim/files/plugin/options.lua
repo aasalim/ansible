@@ -23,6 +23,8 @@ vim.opt.compatible=false
 vim.opt.showcmd=true
 vim.opt.cmdheight=1
 vim.opt.showmode=true
+vim.opt.fileformats='unix'
+
 local has_true_color = vim.fn.has('termguicolors') and vim.fn.has('gui_running')
 if has_true_color then
   vim.o.termguicolors = true
