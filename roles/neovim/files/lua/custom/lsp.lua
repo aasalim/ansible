@@ -1,6 +1,7 @@
 
 local servers = {
   "lua_ls",
+  -- "clangd",
 }
 require('mason-tool-installer').setup { ensure_installed = servers }
 require("mason").setup()

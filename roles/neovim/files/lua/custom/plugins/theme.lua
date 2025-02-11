@@ -1,6 +1,7 @@
 return {
   enabled = true,
-  "catppuccin/nvim",
+  -- "catppuccin/nvim",
+  "folke/tokyonight.nvim",
   lazy = false,
   priority = 1000,
   opts = {},
