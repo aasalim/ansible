@@ -1,1 +1,2 @@
-vim.keymap.set({'n','v','t','i'} , '<Leader>t','<Cmd>ToggleTerm<CR>' , { desc = 'Telescope buffers' })
+
+vim.keymap.set({'n','v','t'} , '<Leader>t','<Cmd>ToggleTerm<CR>' , { desc = 'Toggle Terminal' })

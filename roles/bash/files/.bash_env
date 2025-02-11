@@ -54,3 +54,4 @@ export VIMINIT="source $VIMRC"
 export PATH="$HOME/.local/bin:$PATH"
 
 
+echo "Loaded .bash_env"

@@ -20,3 +20,5 @@ if [ "$BASH" ]; then
     . "$HOME/.bashrc"
   fi
 fi
+
+echo "Loaded .profile"

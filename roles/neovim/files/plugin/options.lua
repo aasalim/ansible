@@ -1,9 +1,3 @@
---  ____                           _ 
--- / ___| ___ _ __   ___ _ __ __ _| |
---| |  _ / _ \ '_ \ / _ \ '__/ _` | |
---| |_| |  __/ | | |  __/ | | (_| | |
--- \____|\___|_| |_|\___|_|  \__,_|_|
---                                   
 -- Line Numbers
 vim.opt.number=true
 vim.opt.relativenumber=true
@@ -48,8 +42,8 @@ vim.opt.cursorline=true
 vim.opt.breakindent = true
 vim.opt.undofile = true
 vim.opt.signcolumn = 'yes'
-vim.opt.updatetime = 250
-vim.opt.timeoutlen = 300
+vim.opt.updatetime = 200
+vim.opt.timeoutlen = 250
 vim.opt.mouse = 'a'
 vim.opt.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
@@ -58,23 +52,14 @@ vim.opt.inccommand = 'split'
 vim.schedule(function()
   vim.opt.clipboard = 'unnamedplus'
 end)
---  ____ _                    _              _____     _         
--- / ___| |__   __ _ _ __ ___| |_ ___ _ __  |_   _|_ _| |__  ___ 
---| |   | '_ \ / _` | '__/ __| __/ _ \ '__|   | |/ _` | '_ \/ __|
---| |___| | | | (_| | | | (__| ||  __/ |      | | (_| | |_) \__ \
--- \____|_| |_|\__,_|_|  \___|\__\___|_|      |_|\__,_|_.__/|___/
---                                                               
+
+-- Character Tabs
 vim.opt.tabstop=4
 vim.opt.shiftwidth=4
 vim.opt.softtabstop=4
 vim.opt.expandtab=true
 vim.opt.smartindent=true
 
--- _____     _         
---|_   _|_ _| |__  ___ 
---  | |/ _` | '_ \/ __|
---  | | (_| | |_) \__ \
---  |_|\__,_|_.__/|___/
---                     
+-- Tabs
 vim.opt.showtabline=2
 vim.opt.laststatus=2

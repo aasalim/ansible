@@ -1,38 +1,92 @@
 ---
 - name: "{{ role_name }} | Check for tmux"
   ansible.builtin.stat:
-    path: /usr/bin/tmux
+    path: /usr/local/bin/tmux
   register: tmux_check
 
-- name: "{{ role_name }} | Install tmux"
+- name: "{{ role_name }} | Dependencies"
   ansible.builtin.apt:
     name:
-      - tmux
+      - git
+      - automake
+      - build-essential
+      - pkg-config
+      - libevent-dev
+      - libncurses5-dev
+      - bison
     state: present
+    update_cache: yes
   become: true
   when: not tmux_check.stat.exists
 
-- name: "{{ role_name }} | Install TPM"
-  ansible.builtin.git:
-    repo: https://github.com/tmux-plugins/tpm
-    dest: "{{ ansible_user_dir }}/.tmux/plugins/tpm"
-
-- name: "{{ role_name }} | Install tmuxifier"
-  ansible.builtin.git:
-    repo: https://github.com/jimeh/tmuxifier
-    dest: "{{ ansible_user_dir }}/.tmuxifier"
+- name: "{{ role_name }} | Create downloads directory"
+  ansible.builtin.file:
+    path: "~/Downloads/tmux"
+    state: directory
   when: not tmux_check.stat.exists
 
-- name: "{{ role_name }} | Create symlink to config folder"
-  ansible.builtin.file:
-    src: "{{ role_path }}/files"
-    dest: "{{ ansible_user_dir }}/.config/tmux"
-    state: link
-    force: true
+- name: "{{ role_name }} | Clone tmux github repository"
+  git:
+    repo: "https://github.com/tmux/tmux"
+    dest: "{{ ansible_user_dir }}/Downloads/tmux"
+    clone: yes
+    version: 3.5a
+    update: yes
+  when: not tmux_check.stat.exists
 
-- name: "{{ role_name }} | Copy .config/.tmux.conf"
-  ansible.builtin.file:
-   src: "{{ role_path }}/files/.tmux.conf"
-   dest: "{{ ansible_user_dir }}/.tmux.conf"
-   state: link
-   force: yes
+- name: "{{ role_name }} | Generate tmux"
+  ansible.builtin.command: ./autogen.sh
+  args:
+    chdir: "{{ ansible_user_dir }}/Downloads/tmux"
+  when: not tmux_check.stat.exists
+
+- name: "{{ role_name }} | Configure tmux"
+  ansible.builtin.command: ./configure
+  args:
+    chdir: "{{ ansible_user_dir }}/Downloads/tmux"
+  when: not tmux_check.stat.exists
+
+- name: "{{ role_name }} | Run make"
+  make:
+    chdir: "{{ ansible_user_dir }}/Downloads/tmux"
+  become: false 
+  when: not tmux_check.stat.exists
+
+- name: "{{ role_name }} | Run make install"
+  make:
+    target: "install"
+    chdir: "{{ ansible_user_dir }}/Downloads/tmux"
+  become: true
+  when: not tmux_check.stat.exists
+
+- name: "{{ role_name }} | Install Catppuccin"
+  ansible.builtin.git:
+    repo: https://github.com/catppuccin/tmux.git
+    dest: "{{ ansible_user_dir }}/.config/tmux/plugins/catppuccin/tmux"
+
+# - name: "{{ role_name }} | Install TPM"
+#   ansible.builtin.git:
+#     repo: https://github.com/tmux-plugins/tpm
+#     dest: "{{ ansible_user_dir }}/.tmux/plugins/tpm"
+#   when: not tmux_check.stat.exists
+#
+#
+# - name: "{{ role_name }} | Install tmuxifier"
+#   ansible.builtin.git:
+#     repo: https://github.com/jimeh/tmuxifier
+#     dest: "{{ ansible_user_dir }}/.tmuxifier"
+#   when: not tmux_check.stat.exists
+#
+# - name: "{{ role_name }} | Create symlink to config folder"
+#   ansible.builtin.file:
+#     src: "{{ role_path }}/files"
+#     dest: "{{ ansible_user_dir }}/.config/tmux"
+#     state: link
+#     force: true
+#
+# - name: "{{ role_name }} | Copy .config/.tmux.conf"
+#   ansible.builtin.file:
+#    src: "{{ role_path }}/files/.tmux.conf"
+#    dest: "{{ ansible_user_dir }}/.tmux.conf"
+#    state: link
+#    force: yes

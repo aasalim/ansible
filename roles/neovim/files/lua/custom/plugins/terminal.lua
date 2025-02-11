@@ -1,7 +1,7 @@
 return {
   enabled = true,
   'akinsho/toggleterm.nvim', 
-  config = function()
+ config = function()
     require("custom.terminal")
   end
 }

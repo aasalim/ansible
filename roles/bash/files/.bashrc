@@ -23,16 +23,9 @@ shopt -s histappend                 # Append to history instead of overwriting
 HISTSIZE=5000                       # Number of commands to keep in memory
 HISTFILESIZE=10000                  # Number of commands stored in ~/.bash_history
 
-
 # === Terminal Adjustments ===
 shopt -s checkwinsize  # Adjust window size after each command
 
-# Enable colored prompt if 'tput' exists and terminal supports colors  
-if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then  
-    color_prompt=yes  
-else  
-    color_prompt=no  
-fi  
 # Set the default prompt with custom colors and symbols
 BRACKET_COLOR="\[\033[38;5;35m\]"
 CLOCK_COLOR="\[\033[38;5;35m\]"
@@ -63,3 +56,5 @@ fi
 # === Load Dotfiles SSH keys  ===
 eval $(ssh-agent -s) >/dev/null && ssh-add ~/.ssh/dotfiles 2>/dev/null
 
+
+echo "Loaded .bashrc"

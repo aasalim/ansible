@@ -62,3 +62,5 @@ alias vpnon='sudo drproxy on'
 # === TMUX Aliases ===
 alias rice='tmuxifier load-session rice'
 alias work='tmuxifier load-session work'
+
+echo "Loaded .bash_aliases"

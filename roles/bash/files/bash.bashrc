@@ -21,3 +21,5 @@
 if [ -f ~/.bashrc ]; then
     . ~/.bashrc
 fi
+
+echo "Loaded bash.bashrc"
