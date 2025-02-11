@@ -43,7 +43,7 @@ vim.opt.breakindent = true
 vim.opt.undofile = true
 vim.opt.signcolumn = 'yes'
 vim.opt.updatetime = 200
-vim.opt.timeoutlen = 250
+vim.opt.timeoutlen = 300
 vim.opt.mouse = 'a'
 vim.opt.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }

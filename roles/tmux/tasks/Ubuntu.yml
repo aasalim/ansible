@@ -19,6 +19,21 @@
   become: true
   when: not tmux_check.stat.exists
 
+- name: "{{ role_name }} | Copy .config/.tmux.conf"
+  ansible.builtin.file:
+   src: "{{ role_path }}/files/.tmux.conf"
+   dest: "{{ ansible_user_dir }}/.tmux.conf"
+   state: hard
+   force: yes
+  when: not tmux_check.stat.exists
+
+- name: "{{ role_name }} | Create symlink to config folder"
+  ansible.builtin.file:
+    src: "{{ role_path }}/files/layouts"
+    dest: "{{ ansible_user_dir }}/.config/tmux/layouts"
+    state: link
+    force: true
+
 - name: "{{ role_name }} | Create downloads directory"
   ansible.builtin.file:
     path: "~/Downloads/tmux"
@@ -59,34 +74,14 @@
   become: true
   when: not tmux_check.stat.exists
 
-- name: "{{ role_name }} | Install Catppuccin"
+- name: "{{ role_name }} | Install TPM"
   ansible.builtin.git:
-    repo: https://github.com/catppuccin/tmux.git
-    dest: "{{ ansible_user_dir }}/.config/tmux/plugins/catppuccin/tmux"
+    repo: https://github.com/tmux-plugins/tpm
+    dest: "{{ ansible_user_dir }}/.tmux/plugins/tpm"
+  when: not tmux_check.stat.exists
 
-# - name: "{{ role_name }} | Install TPM"
-#   ansible.builtin.git:
-#     repo: https://github.com/tmux-plugins/tpm
-#     dest: "{{ ansible_user_dir }}/.tmux/plugins/tpm"
-#   when: not tmux_check.stat.exists
-#
-#
-# - name: "{{ role_name }} | Install tmuxifier"
-#   ansible.builtin.git:
-#     repo: https://github.com/jimeh/tmuxifier
-#     dest: "{{ ansible_user_dir }}/.tmuxifier"
-#   when: not tmux_check.stat.exists
-#
-# - name: "{{ role_name }} | Create symlink to config folder"
-#   ansible.builtin.file:
-#     src: "{{ role_path }}/files"
-#     dest: "{{ ansible_user_dir }}/.config/tmux"
-#     state: link
-#     force: true
-#
-# - name: "{{ role_name }} | Copy .config/.tmux.conf"
-#   ansible.builtin.file:
-#    src: "{{ role_path }}/files/.tmux.conf"
-#    dest: "{{ ansible_user_dir }}/.tmux.conf"
-#    state: link
-#    force: yes
+- name: "{{ role_name }} | Install tmuxifier"
+  ansible.builtin.git:
+    repo: https://github.com/jimeh/tmuxifier
+    dest: "{{ ansible_user_dir }}/.tmuxifier"
+
