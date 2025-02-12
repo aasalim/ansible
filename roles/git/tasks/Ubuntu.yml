@@ -6,6 +6,11 @@
     state: present
   become: true
 
+- name: "{{ role_name }} | Check for first run"
+  ansible.builtin.stat:
+    path: "{{ ansible_user_dir }}/.dotfiles_run"
+  register: first_run_check
+
 - name: "{{ role_name }} | Set diff.colorMoved"
   community.general.git_config:
     name: diff.colorMoved
@@ -48,12 +53,14 @@
     scope: global
     value: "{{ git_user_email }}"
   no_log: true
+  when: not first_run_check.stat.exists
 
 - name: "{{ role_name }} | Set user.name"
   community.general.git_config:
     name: user.name
     scope: global
     value: "{{ git_user_name }}"
+  when: not first_run_check.stat.exists
 
 - name: "{{ role_name }} | Set user.signingkey"
   community.general.git_config:

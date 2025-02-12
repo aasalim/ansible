@@ -1,0 +1,16 @@
+{
+    "proxies":
+    {
+        "default":
+        {
+            "httpProxy": "http://internet.ford.com:83",
+            "httpsProxy": "http://internet.ford.com:83",
+            "noProxy": "*.ford.com,localhost,127.0.0.1,.ford.com,.local,.testing,.internal,.googleapis.com,19.0.0.0/8,136.1.0.0/16,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
+        }
+    },
+    "auths": {
+            "registry.ford.com": {
+                    "auth": "{{ work_quay_token }}"
+            }
+    }
+}

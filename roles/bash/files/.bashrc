@@ -53,6 +53,11 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
+# === Load Work Configs (if available) ===
+if [ -f ~/.bash_work ]; then
+    . ~/.bash_work
+fi
+
 # === Load Dotfiles SSH keys  ===
 eval $(ssh-agent -s) >/dev/null && ssh-add ~/.ssh/dotfiles 2>/dev/null
 

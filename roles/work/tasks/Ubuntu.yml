@@ -1,24 +1,168 @@
 ---
-#- name: "{{ role_name }} | Copy resolv.conf"
-#  ansible.builtin.copy:
-#    src: "{{ role_path }}/files/resolv.conf"
-#    dest: "/etc/resolv.conf"
-#    force: yes
-#    mode: '0644'
-#  become: yes
-#
-#- name: "{{ role_name }} | Create symlink for environment"
-#  ansible.builtin.file:
-#    src: "{{ role_path }}/files/environment"
-#    dest: "/etc/environment"
-#    state: link
-#    force: yes
-#  become: yes
-#
-#- name: "{{ role_name }} | Create symlink for wsl.conf"
-#  ansible.builtin.file:
-#    src: "{{ role_path }}/files/wsl.conf"
-#    dest: "/etc/wsl.conf"
-#    state: link
-#    force: yes
-#  become: yes
+- name: "{{ role_name }} | Check for ghs"
+  ansible.builtin.stat:
+    path: /usr/ghs/multi_814/multi
+  register: ghs_check
+
+- name: "{{ role_name }} | Dependencies"
+  ansible.builtin.apt:
+    name:
+      - build-essential
+      - software-properties-common
+      - git
+      - git-lfs
+      - podman
+      - ninja-build
+      - cmake
+      - gcc-9
+      - g++-9
+    state: present
+  become: true
+
+- name: "{{ role_name }} | Create symlink for drproxy"
+  ansible.builtin.file:
+    src: "{{ role_path }}/files/sbin/drproxy"
+    dest: "/usr/local/bin/drproxy"
+    state: link
+    force: true
+  become: true
+  when: not ghs_check.stat.exists
+
+- name: "{{ role_name }} | Configure docker"
+  block:
+    - name: "{{ role_name }} | Create .docker directory"
+      ansible.builtin.file:
+        path: "~/.docker"
+        state: directory
+
+    - name: "{{ role_name }} | Configure containers"
+      ansible.builtin.file:
+        src: "{{ role_path }}/files/containers"
+        dest: "{{ ansible_user_dir }}/.config/containers"
+        state: link
+        force: yes
+
+    - name: "{{ role_name }} | Configure docker"
+      template:
+        src: "{{ role_path }}/templates/config.json.j2"
+        dest: "{{ ansible_user_dir }}/.docker/config.json"
+      no_log: true
+
+- name: "{{ role_name }} | Configure git"
+  block:
+    - name: "{{ role_name }} | Set user.email"
+      community.general.git_config:
+        name: user.email
+        scope: global
+        value: "{{ work_email }}"
+      no_log: true
+
+    - name: "{{ role_name }} | Set user.name"
+      community.general.git_config:
+        name: user.name
+        scope: global
+        value: "{{ user_name }}"
+
+- name: "{{ role_name }} | Configure Artifactory"
+  template:
+    src: "{{ role_path }}/templates/.netrc.j2"
+    dest: "{{ ansible_user_dir }}/.netrc"
+  no_log: true
+
+- name: "{{ role_name }} | Configure .bash_work"
+  template:
+    src: "{{ role_path }}/templates/.bash_work.j2"
+    dest: "{{ ansible_user_dir }}/.bash_work"
+  no_log: true
+
+- name: "{{ role_name }} | Configure symlink podman for docker"
+  file:
+    src: /usr/bin/podman
+    dest: /usr/local/bin/docker
+    state: link
+    force: true
+  become: true
+
+- name: "{{ role_name }} | Install python packages"
+  ansible.builtin.pip:
+    name: poetry==1.8.2
+    executable: pip3
+
+- name: "{{ role_name }} | Check for tmux"
+  ansible.builtin.stat:
+    path: /usr/ghs/comp_202214
+  register: ghs_check
+
+- name: "{{ role_name }} | Install GHS"
+  block:
+    - name: "{{ role_name }} | Create downloads directory"
+      ansible.builtin.file:
+        path: "{{ ansible_user_dir }}/Downloads"
+        state: directory
+        # - name: "{{ role_name }} | Install GHS"
+        #   ansible.builtin.command: "wget --user={{ work_email }} --password={{ work_jfrog_token }} https://jfrog.ford.com/artifactory/bcsw-zonals-generic-dev-local/misc/GHS/linux64_v800_8.1.4.iso"
+        #   args:
+        #     chdir: "{{ ansible_user_dir }}/Downloads"
+    - name: "{{ role_name }} | Create mount directory"
+      ansible.builtin.file:
+        path: "/mnt/iso"
+        state: directory
+      become: true
+
+    - name: "{{ role_name }} | Check if ISO is mounted"
+      stat:
+        path: /mnt/iso
+      register: mount_check
+
+    - name: "{{ role_name }} | Mount ISO"
+      ansible.builtin.command: "sudo mount -o loop {{ ansible_user_dir }}/Downloads/linux64_v800_8.1.4.iso /mnt/iso"
+      become: true
+      when: not mount_check.stat.exists
+
+    - name: "{{ role_name }} | Update System"
+      block:
+      - name: "{{ role_name }} | Add i386 architecture"
+        ansible.builtin.command: sudo dpkg --add-architecture i386 
+        become: true
+      - name: "{{ role_name }} | Update system"
+        ansible.builtin.command: sudo apt update -y  
+        become: true
+      - name: "{{ role_name }} | Upgrade system"
+        ansible.builtin.command: sudo apt upgrade -y
+        become: true
+      - name: "{{ role_name }} | Upgrade distrubtion"
+        ansible.builtin.command: sudo apt dist-upgrade -y
+        become: true
+      
+      become: true
+    - name: "{{ role_name }} | Update System"
+      ansible.builtin.apt:
+        name:
+          - libc6:i386 
+          - libncurses5:i386
+          - libstdc++6:i386 
+          - libx11-6:i386 
+          - lib32z1
+        state: present
+      become: true
+    - name: "{{ role_name }} | Install GHS"
+      ansible.builtin.command: "sudo /mnt/iso/cmd_ginstall -auto_install Compiler /usr/ghs/comp_202214 'MULTI IDE' /usr/ghs/multi_814"
+      become: true
+      when: not ghs_check.stat.exists
+    - name: "{{ role_name }} | Setup GHS License"
+      block:
+      - name: "{{ role_name }} | Setup IDE License"
+        ansible.builtin.file:
+         src: "{{ role_path }}/files/license.cfg"
+         dest: "/usr/ghs/comp_202214/config/license.cfg"
+         state: hard
+         force: yes
+        become: true
+      - name: "{{ role_name }} | Setup Compiler License"
+        ansible.builtin.file:
+         src: "{{ role_path }}/files/license.cfg"
+         dest: "/usr/ghs/multi_814/config/license.cfg"
+         state: hard
+         force: yes
+        become: true
+  when: not ghs_check.stat.exists

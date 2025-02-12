@@ -10,6 +10,7 @@ DOTFILES="$HOME/ansible"
 DOTFILES_LOG="$HOME/.dotfiles.log"
 SSH_DIR="$HOME/.ssh"
 VAULT_SECRET="$HOME/.ansible/vault.secret"
+IS_FIRST_RUN="$HOME/.dotfiles_run"
 
 # _____         _        
 #|_   _|_ _ ___| | _____ 
@@ -175,4 +176,10 @@ else
 fi
 
 ansible-playbook --vault-password-file $VAULT_SECRET "$DOTFILES/main.yml" "$@"
+
+if ! [[ -f "$IS_FIRST_RUN" ]]; then
+  echo -e "${CHECK_MARK} ${GREEN}First run complete!${NC}"
+  echo -e "${ARROW} ${CYAN}Please reboot your computer to complete the setup.${NC}"
+  touch "$IS_FIRST_RUN"
+fi
 

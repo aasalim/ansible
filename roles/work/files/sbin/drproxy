@@ -1,0 +1,76 @@
+#!/bin/bash
+
+user_home=$(eval echo ~$(whoami))
+if [ -z "$SUDO_USER" ]; then
+    user_home=$(eval echo ~$USER)
+else
+    user_home=$(eval echo ~$SUDO_USER)
+fi
+
+case $1 in
+    on)
+cat > $user_home/.bash_proxy <<END
+export http_proxy="http://internet.ford.com:83"
+export https_proxy="http://internet.ford.com:83"
+export ftp_proxy="http://internet.ford.com:83"
+export no_proxy="localhost,127.0.0.1,.ford.com,.local,.testing,.internal,.googleapis.com,19.0.0.0/8,136.1.0.0/16,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
+export FTP_PROXY="http://internet.ford.com:83"
+export HTTPS_PROXY="http://internet.ford.com:83"
+export HTTP_PROXY="http://internet.ford.com:83"
+export NO_PROXY="localhost,127.0.0.1,.ford.com,.local,.testing,.internal,.googleapis.com,19.0.0.0/8,136.1.0.0/16,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
+END
+
+cat > /etc/environment <<END
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
+export http_proxy="http://internet.ford.com:83"
+export https_proxy="http://internet.ford.com:83"
+export ftp_proxy="http://internet.ford.com:83"
+export no_proxy="localhost,127.0.0.1,.ford.com,.local,.testing,.internal,.googleapis.com,19.0.0.0/8,136.1.0.0/16,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
+export FTP_PROXY="http://internet.ford.com:83"
+export HTTPS_PROXY="http://internet.ford.com:83"
+export HTTP_PROXY="http://internet.ford.com:83"
+export NO_PROXY="localhost,127.0.0.1,.ford.com,.local,.testing,.internal,.googleapis.com,19.0.0.0/8,136.1.0.0/16,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
+END
+
+cat > /etc/resolv.conf <<END
+# Ford Name Servers (used while on VPN)
+search ppp.ford.com
+nameserver 19.13.0.246
+nameserver 19.69.0.246
+END
+
+        ;;
+    off)
+cat > $user_home/.bash_proxy <<END
+export http_proxy=
+export https_proxy=
+export ftp_proxy=
+export no_proxy=
+export FTP_PROXY=
+export HTTPS_PROXY=
+export HTTP_PROXY=
+export NO_PROXY=
+END
+
+cat > /etc/environment <<END
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin"
+export http_proxy=
+export https_proxy=
+export ftp_proxy=
+export no_proxy=
+export FTP_PROXY=
+export HTTPS_PROXY=
+export HTTP_PROXY=
+export NO_PROXY=
+END
+
+windows_ip=$(ip route | grep default | awk '{print $3}')
+cat > /etc/resolv.conf <<END
+nameserver $windows_ip
+nameserver 8.8.8.8
+nameserver 8.8.4.4
+END
+        ;;
+esac
+
+source $user_home/.bash_proxy

@@ -1,5 +1,11 @@
+Host *
+    LogLevel error
+Host github.ford.com
+    ServerAliveInterval 10
 # Personal Github Account
 Host github.com
     HostName github.com
     PreferredAuthentications publickey
     IdentityFile ~/.ssh/dotfiles
+    # ProxyCommand        nc -x $proxy_server -X connect %h %p
+    # ServerAliveInterval 10

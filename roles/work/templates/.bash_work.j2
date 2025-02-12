@@ -1,0 +1,43 @@
+#====================================================================== JFrog
+export http_proxy="http://internet.ford.com:83"
+export https_proxy=$http_proxy
+export ftp_proxy=$http_proxy
+export no_proxy="localhost,127.0.0.1,.ford.com,.local,.testing,.internal,.googleapis.com,19.0.0.0/8,136.1.0.0/16,10.0.0.0/8,172.16.0.0/12,192.168.0.0/16"
+export FTP_PROXY=$http_proxy
+export HTTPS_PROXY=$http_proxy
+export HTTP_PROXY=$http_proxy
+export NO_PROXY=$no_proxy
+
+#====================================================================== Jenkins
+export ARTIFACTORY_USER={{ work_email }}
+export ARTIFACTORY_PASS={{ work_jfrog_token }}
+
+#====================================================================== CONAN
+export CONAN_LOGIN_USERNAME=$ARTIFACTORY_USER
+export CONAN_PASSWORD=$ARTIFACTORY_PASS
+
+#====================================================================== Poetry
+export POETRY_HTTP_BASIC_VSNA_PYPI_USERNAME=$ARTIFACTORY_USER
+export POETRY_HTTP_BASIC_VSNA_PYPI_PASSWORD=$ARTIFACTORY_PASS
+
+#====================================================================== Jenkins
+# Uncomment if you require jenkins credentials
+# export JENKINS_USER={{ work_cdsid }}
+# export JENKINS_TOKEN={identity-token}
+
+#====================================================================== Polyspace
+# Polyspace Credentials
+export CRED_POLY=$HOME/cred_poly.txt
+
+#====================================================================== GHS
+export GHS_LMHOST="@pccls3.dearborn.ford.com"
+export GHS_LMPORT="2015"
+
+#====================================================================== Paths
+# For Polyspace 
+export PATH="$HOME/polyspacedesktop/polyspace/bin/:$PATH"
+# For Google Repo
+export PATH="$HOME/bin:$PATH"
+# For Poetry
+export PATH="$HOME/.local/bin:$PATH"
+

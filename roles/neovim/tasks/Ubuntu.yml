@@ -23,10 +23,11 @@
       - ansible-lint
       - ripgrep
       - luarocks
+      - nodejs
+      - npm
     state: present
   become: true
   when: not neovim_check.stat.exists
-
 
 - name: "{{ role_name }} | Create downloads directory"
   ansible.builtin.file:
