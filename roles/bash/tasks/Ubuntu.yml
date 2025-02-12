@@ -30,19 +30,11 @@
     mode: '0755'
 
 - name: "{{ role_name }} | Copy scripts/bin"
-  ansible.builtin.file:
-    src: "{{ role_path }}/files/scripts/bin"
+  ansible.builtin.copy:
+    src: "{{ item }}"
     dest: "{{ ansible_user_dir }}/.local/bin"
-    state: hard
-    force: true
-
-- name: "{{ role_name }} | Create symlink for drproxy"
-  ansible.builtin.file:
-    src: "{{ role_path }}/files/scripts/sbin/drproxy"
-    dest: "/usr/local/bin/drproxy"
-    state: link
-    force: true
-  become: true
+    mode: '0755'
+  loop: "{{ query('fileglob', '{{ role_path }}/files/scripts/bin/*') }}"
 
 - name: "{{ role_name }} | Create symlink for .bashrc"
   ansible.builtin.file:
@@ -74,29 +66,6 @@
     force: yes
   become: yes
 
-#- name: "{{ role_name }} | Create symlink for resolv.conf"
-#  ansible.builtin.copy:
-#    src: "{{ role_path }}/files/resolv.conf"
-#    dest: "/etc/resolv.conf"
-#    force: yes
-#    mode: '0644'
-#  become: yes
-
-#- name: "{{ role_name }} | Create symlink for environment"
-#  ansible.builtin.file:
-#    src: "{{ role_path }}/files/environment"
-#    dest: "/etc/environment"
-#    state: link
-#    force: yes
-#  become: yes
-
-- name: "{{ role_name }} | Create symlink for wsl.conf"
-  ansible.builtin.file:
-    src: "{{ role_path }}/files/wsl.conf"
-    dest: "/etc/wsl.conf"
-    state: link
-    force: yes
-  become: yes
 
 - name: "{{ role_name }} | Create symlink for .bash_aliases"
   ansible.builtin.file:
