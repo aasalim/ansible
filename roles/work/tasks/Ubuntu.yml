@@ -128,7 +128,7 @@
     name: poetry==1.8.2
     executable: pip3
 
-- name: "{{ role_name }} | Check for tmux"
+- name: "{{ role_name }} | Check for ghs"
   ansible.builtin.stat:
     path: /usr/ghs/comp_202214
   register: ghs_check
@@ -143,6 +143,7 @@
       ansible.builtin.command: "wget --user={{ work_email }} --password={{ work_jfrog_token }} https://jfrog.ford.com/artifactory/bcsw-zonals-generic-dev-local/misc/GHS/linux64_v800_8.1.4.iso"
       args:
         chdir: "{{ ansible_user_dir }}/Downloads"
+
     - name: "{{ role_name }} | Create mount directory"
       ansible.builtin.file:
         path: "/mnt/iso"
@@ -151,7 +152,7 @@
 
     - name: "{{ role_name }} | Check if ISO is mounted"
       stat:
-        path: /mnt/iso
+        path: /mnt/iso/cmd_ginstall
       register: mount_check
 
     - name: "{{ role_name }} | Mount ISO"

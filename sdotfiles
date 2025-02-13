@@ -61,35 +61,35 @@ set -e
 
 # _header colorize the given argument with spacing
 function __task {
-  # if _task is called while a task was set, complete the previous
-  if [[ $TASK != "" ]]; then
-    printf "${OVERWRITE}${LGREEN} [✓]  ${LGREEN}${TASK}\n"
-  fi
+    # if _task is called while a task was set, complete the previous
+    if [[ $TASK != "" ]]; then
+        printf "${OVERWRITE}${LGREEN} [✓]  ${LGREEN}${TASK}\n"
+    fi
 
     # set new task title and print
     TASK=$1
     printf "${LBLACK} [ ]  ${TASK} \n${LRED}"
-  }
+}
 
 # _cmd performs commands with error checking
 function _cmd {
-  #create log if it doesn't exist
-  if ! [[ -f $DOTFILES_LOG ]]; then
-    touch $DOTFILES_LOG
-  fi
+    #create log if it doesn't exist
+    if ! [[ -f $DOTFILES_LOG ]]; then
+        touch $DOTFILES_LOG
+    fi
 
     # empty conduro.log
     > $DOTFILES_LOG
 
     # hide stdout, on error we print and exit
     if eval "$1" 1> /dev/null 2> $DOTFILES_LOG; then
-      return 0 # success
+        return 0 # success
     fi
     # read error from log and add spacing
     printf "${OVERWRITE}${LRED} [X]  ${TASK}${LRED}\n"
 
     while read line; do
-      printf "      ${line}\n"
+        printf "      ${line}\n"
     done < $DOTFILES_LOG
 
     printf "\n"
@@ -99,44 +99,50 @@ function _cmd {
 
     # exit installation
     exit 1
-  }
+}
 
-  function _clear_task {
+function _clear_task {
     TASK=""
-  }
+}
 
-  function _task_done {
+function _task_done {
     printf "${OVERWRITE}${LGREEN} [✓]  ${LGREEN}${TASK}\n"
     _clear_task
-  }
-  function ubuntu_setup() {
+}
+function ubuntu_setup() {
 
     if ! [[ -f "$IS_FIRST_RUN" ]]; then
-      # Run system update only once with proper permissions
-      __task "Updating Ubuntu"
-      _cmd "sudo apt-get update && sudo apt-get upgrade -y"
-      _task_done
-      __task "Installing Ansible"
-      _cmd "sudo apt-get update"
-      _cmd "sudo apt-get install -y software-properties-common"
-      _cmd "sudo apt-add-repository -y ppa:ansible/ansible"
-      _cmd "sudo apt-get update"
-      _cmd "sudo apt-get install -y ansible"
-      _cmd "sudo apt-get install python3-argcomplete"
-      _cmd "sudo activate-global-python-argcomplete3"
-      _task_done
+        __task "Updating Ubuntu"
+        _cmd "sudo apt-get update && sudo apt-get upgrade -y"
+        _task_done
+        if ! dpkg -s ansible >/dev/null 2>&1; then
+            __task "Installing Ansible"
+            _cmd "sudo apt-get update"
+            _cmd "sudo apt-get install -y software-properties-common"
+            _cmd "sudo apt-add-repository -y ppa:ansible/ansible"
+            _cmd "sudo apt-get update"
+            _cmd "sudo apt-get install -y ansible"
+            _cmd "sudo apt-get install python3-argcomplete"
+            _cmd "sudo activate-global-python-argcomplete3"
+            _task_done
+        fi
+        if ! dpkg -s git >/dev/null 2>&1; then
+            __task "Installing Git"
+            _cmd "sudo apt-get install -y git"
+            _task_done
+        fi
 
-      __task "Installing Git"
-      _cmd "sudo apt-get install -y git"
-      _task_done
-
-      __task "Installing Python3 Pip"
-      _cmd "sudo apt-get install -y python3-pip"
-      _task_done
-      __task "Installing Python3 Watchdog"
-      _cmd "sudo apt-get install -y python3-watchdog"
-      _task_done
-  fi
+        if ! dpkg -s python3-pip >/dev/null 2>&1; then
+            __task "Installing Python3 Pip"
+            _cmd "sudo apt-get install -y python3-pip"
+            _task_done
+        fi
+        if ! pip3 list | grep watchdog >/dev/null 2>&1; then
+            __task "Installing Python3 Watchdog"
+            _cmd "sudo apt-get install -y python3-watchdog"
+            _task_done
+        fi
+    fi
 }
 
 ubuntu_setup
@@ -148,12 +154,12 @@ ubuntu_setup
 #|____/____/|_| |_|
 #                  
 if ! [[ -f "$SSH_DIR/authorized_keys" ]]; then
-  __task "Generating SSH keys"
-  _cmd "mkdir -p $SSH_DIR"
-  _cmd "chmod 700 $SSH_DIR"
-  _cmd "ssh-keygen -t ed25519 -f $SSH_DIR/ed25519 -N '' -C $USER@$HOSTNAME"
-  _cmd "cat $SSH_DIR/ed25519.pub >> $SSH_DIR/authorized_keys"
-  _task_done
+    __task "Generating SSH keys"
+    _cmd "mkdir -p $SSH_DIR"
+    _cmd "chmod 700 $SSH_DIR"
+    _cmd "ssh-keygen -t ed25519 -f $SSH_DIR/ed25519 -N '' -C $USER@$HOSTNAME"
+    _cmd "cat $SSH_DIR/ed25519.pub >> $SSH_DIR/authorized_keys"
+    _task_done
 fi
 
 # ____        _    __ _ _           
@@ -163,21 +169,21 @@ fi
 #|____/ \___/ \__|_| |_|_|\___||___/
 #                                   
 if ! [[ -d "$DOTFILES" ]]; then
-  __task "Cloning Dotfiles repository"
-  _cmd "git clone --quiet https://github.com/aasalim/ansible.git $DOTFILES"
-  _cmd "ansible-galaxy install -r $DOTFILES/requirements/common.yml"
-  _task_done
+    __task "Cloning Dotfiles repository"
+    _cmd "git clone --quiet https://github.com/aasalim/ansible.git $DOTFILES"
+    _cmd "ansible-galaxy install -r $DOTFILES/requirements/common.yml"
+    _task_done
 else
-  __task "Updating repository"
-  #_cmd "git -C $DOTFILES pull --quiet"
-  _task_done
+    __task "Updating repository"
+    #_cmd "git -C $DOTFILES pull --quiet"
+    _task_done
 fi
 
 ansible-playbook --vault-password-file $VAULT_SECRET "$DOTFILES/main.yml" "$@"
 
 if ! [[ -f "$IS_FIRST_RUN" ]]; then
-  echo -e "${CHECK_MARK} ${GREEN}First run complete!${NC}"
-  echo -e "${ARROW} ${CYAN}Please reboot your computer to complete the setup.${NC}"
-  touch "$IS_FIRST_RUN"
+    echo -e "${CHECK_MARK} ${GREEN}First run complete!${NC}"
+    echo -e "${ARROW} ${CYAN}Please reboot your computer to complete the setup.${NC}"
+    touch "$IS_FIRST_RUN"
 fi
 
