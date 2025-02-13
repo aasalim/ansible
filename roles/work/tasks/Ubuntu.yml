@@ -4,19 +4,58 @@
     path: /usr/ghs/multi_814/multi
   register: ghs_check
 
+- name: "{{ role_name }} | Set podman repository"
+  ansible.builtin.shell: |
+    . /etc/os-release
+    echo "$VERSION_ID"
+  register: ubuntu_version
+  changed_when: false
+
+- name: "{{ role_name }} | Set podman repository"
+  ansible.builtin.set_fact:
+    podman_repo_url: "http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/unstable/xUbuntu_{{ ubuntu_version.stdout }}/"
+
+- name: "{{ role_name }} | Update apt cache"
+  ansible.builtin.apt:
+    update_cache: yes
+  become: true
+
 - name: "{{ role_name }} | Dependencies"
   ansible.builtin.apt:
     name:
       - build-essential
+      - curl
       - software-properties-common
       - git
       - git-lfs
-      - podman
       - ninja-build
       - cmake
       - gcc-9
       - g++-9
       - ccache
+    state: present
+  become: true
+
+- name: "{{ role_name }} | Add podman repository"
+  ansible.builtin.shell: |
+    echo "deb {{ podman_repo_url }} /" | sudo tee /etc/apt/sources.list.d/podman.list
+  become: true
+
+- name: "{{ role_name }} | Add podman repository key"
+  ansible.builtin.shell: |
+    curl -L {{ podman_repo_url }}Release.key | sudo apt-key add -
+  args:
+    warn: no
+  become: true
+
+- name: "{{ role_name }} | Update apt cache"
+  ansible.builtin.apt:
+    update_cache: yes
+  become: true
+
+- name: "{{ role_name }} | Install podman"
+  ansible.builtin.apt:
+    name: podman
     state: present
   become: true
 
