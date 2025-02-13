@@ -192,6 +192,11 @@
       when: not ghs_check.stat.exists
     - name: "{{ role_name }} | Setup GHS License"
       block:
+      - name: "{{ role_name }} | Create compiler config directory"
+        ansible.builtin.file:
+          path: "/usr/ghs/comp_202214/config"
+          state: directory
+        become: true
       - name: "{{ role_name }} | Setup IDE License"
         ansible.builtin.file:
          src: "{{ role_path }}/files/license.cfg"
