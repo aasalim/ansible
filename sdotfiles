@@ -126,6 +126,9 @@ function ubuntu_setup() {
             _cmd "sudo apt-add-repository -y ppa:deadsnakes/ppa"
             _cmd "sudo apt-get update"
             _cmd "sudo apt-get install -y python3.11"
+            _cmd "sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 2"
+            _cmd "sudo update-alternatives --set python3 /usr/bin/python3.11"
+            _cmd "sudo ln -s /usr/bin/python3.11 /usr/bin/python"
             _task_done
 
         fi
