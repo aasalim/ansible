@@ -27,6 +27,12 @@
    force: yes
   when: not tmux_check.stat.exists
 
+- name: "{{ role_name }} | Create layouts directory"
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.config/tmux/layouts"
+    state: directory
+  when: not tmux_check.stat.exists
+
 - name: "{{ role_name }} | Create symlink to config folder"
   ansible.builtin.file:
     src: "{{ role_path }}/files/layouts"
