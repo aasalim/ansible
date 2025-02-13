@@ -8,6 +8,7 @@ return {
       auto_install = true,
       ensure_installed = {
         "c",
+        "cpp",
         "lua",
         "vim",
         "vimdoc",
@@ -19,6 +20,7 @@ return {
         "regex",
         "markdown_inline",
         "bash",
+        "python",
       },
       sync_install = false,
       highlight = { enable = true },

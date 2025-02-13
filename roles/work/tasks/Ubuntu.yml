@@ -16,6 +16,7 @@
       - cmake
       - gcc-9
       - g++-9
+      - ccache
     state: present
   become: true
 
@@ -99,10 +100,10 @@
       ansible.builtin.file:
         path: "{{ ansible_user_dir }}/Downloads"
         state: directory
-        # - name: "{{ role_name }} | Install GHS"
-        #   ansible.builtin.command: "wget --user={{ work_email }} --password={{ work_jfrog_token }} https://jfrog.ford.com/artifactory/bcsw-zonals-generic-dev-local/misc/GHS/linux64_v800_8.1.4.iso"
-        #   args:
-        #     chdir: "{{ ansible_user_dir }}/Downloads"
+    - name: "{{ role_name }} | Install GHS"
+      ansible.builtin.command: "wget --user={{ work_email }} --password={{ work_jfrog_token }} https://jfrog.ford.com/artifactory/bcsw-zonals-generic-dev-local/misc/GHS/linux64_v800_8.1.4.iso"
+      args:
+        chdir: "{{ ansible_user_dir }}/Downloads"
     - name: "{{ role_name }} | Create mount directory"
       ansible.builtin.file:
         path: "/mnt/iso"
@@ -166,6 +167,13 @@
          force: yes
         become: true
   when: not ghs_check.stat.exists
+
+- name: "{{ role_name }} | Copy googlerepo script"
+  ansible.builtin.copy:
+   src: "{{ role_path }}/files/bin/repo"
+   dest: "{{ ansible_user_dir }}/.local/bin/repo"
+   force: yes
+   mode: '0755'
 
 #- name: "{{ role_name }} | Create symlink for resolv.conf"
 #  ansible.builtin.copy:

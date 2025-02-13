@@ -12,16 +12,20 @@ if initialize_session "work"; then
     new_window "fhcm"
     run_cmd "cd ~/work/FHCM"
     run_cmd "nvim ."
-    split_h 50
-    run_cmd "cd ~/work/FHCM"
-    run_cmd "clear"
+    # split_h 50
+    # run_cmd "cd ~/work/FHCM"
+    # run_cmd "clear"
 
     new_window "fec"
     run_cmd "cd ~/work/FEC"
     run_cmd "nvim ."
-    split_h 50
-    run_cmd "cd ~/work/FEC"
-    run_cmd "clear"
+    # split_h 50
+    # run_cmd "cd ~/work/FEC"
+    # run_cmd "clear"
+
+    new_window "fzm"
+    run_cmd "cd ~/work/FZM"
+    run_cmd "nvim ."
 
     select_window "terminal"
 
