@@ -55,10 +55,6 @@ alias vi='nvim'
 alias wiki='cd $HOME/backups/vimwiki;nvim -c VimwikiIndex'
 alias notes='nvim -c VimwikiDiaryIndex'
 
-# === VPN Aliases ===
-alias vpnoff='sudo drproxy off'
-alias vpnon='sudo drproxy on'
-
 # === TMUX Aliases ===
 alias rice='tmuxifier load-session rice'
 alias work='tmuxifier load-session work'
