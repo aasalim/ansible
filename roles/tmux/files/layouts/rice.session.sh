@@ -16,17 +16,17 @@ if initialize_session "rice"; then
     new_window "dotfiles"
     run_cmd "cd $DOTFILES && clear"
     run_cmd "nvim ."
-    split_h 50
-    select_pane 1
+    # split_h 50
+    # select_pane 1
 
     new_window "bashrc"
     run_cmd "nvim $BASHRC"
 
     new_window "tmux"
     run_cmd "nvim ~/.tmux.conf"
-    split_h 50
-    run_cmd "cd ~/ && clear"
-    select_pane 2  
+    # split_h 50
+    # run_cmd "cd ~/ && clear"
+    # select_pane 2  
 
     new_window "wiki"
     run_cmd "wiki"

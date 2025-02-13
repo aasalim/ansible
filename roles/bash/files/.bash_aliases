@@ -59,4 +59,7 @@ alias notes='nvim -c VimwikiDiaryIndex'
 alias rice='tmuxifier load-session rice'
 alias work='tmuxifier load-session work'
 
+# === cat Aliases ===
+alias cat='batcat'
+
 echo "Loaded .bash_aliases"

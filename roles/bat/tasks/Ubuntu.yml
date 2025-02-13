@@ -1,0 +1,6 @@
+---
+- name: "{{ role_name }} | Install bat"
+  ansible.builtin.apt:
+    name:
+      - bat
+  become: true

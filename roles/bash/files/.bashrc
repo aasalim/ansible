@@ -61,5 +61,7 @@ fi
 # === Load Dotfiles SSH keys  ===
 eval $(ssh-agent -s) >/dev/null && ssh-add ~/.ssh/dotfiles 2>/dev/null
 
+# === Load zoxide ===
+eval "$(zoxide init bash)"
 
 echo "Loaded .bashrc"

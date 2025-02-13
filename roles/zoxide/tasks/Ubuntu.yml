@@ -1,0 +1,6 @@
+---
+- name: "{{ role_name }} | Install zoxide"
+  ansible.builtin.apt:
+    name:
+      - zoxide
+  become: true
