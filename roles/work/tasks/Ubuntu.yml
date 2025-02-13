@@ -38,12 +38,12 @@
 
 - name: "{{ role_name }} | Add podman repository"
   ansible.builtin.shell: |
-    echo "deb {{ podman_repo_url }} /" | sudo tee /etc/apt/sources.list.d/podman.list
+    echo "deb {{ podman_repo_url }} /" | tee /etc/apt/sources.list.d/devel:kubic:libcontainers:unstable.list
   become: true
 
 - name: "{{ role_name }} | Add podman repository key"
   ansible.builtin.shell: |
-    curl -L {{ podman_repo_url }}Release.key | sudo apt-key add -
+    curl -L {{ podman_repo_url }}Release.key | gpg --dearmor | tee /etc/apt/trusted.gpg.d/devel_kubic_libcontainers_unstable.gpg > /dev/null
   args:
     warn: no
   become: true
