@@ -123,7 +123,7 @@ function ubuntu_setup() {
 
             _cmd "sudo apt-get update"
             _cmd "sudo apt-get install -y software-properties-common"
-            _cmd "sudo apt-add-repository -y ppa:deadsnake/ppa"
+            _cmd "sudo apt-add-repository -y ppa:deadsnakes/ppa"
             _cmd "sudo apt-get update"
             _cmd "sudo apt-get install -y python3.11"
             _task_done
