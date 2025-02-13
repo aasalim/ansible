@@ -67,7 +67,7 @@ function __task {
     fi
 
     # set new task title and print
-    TASK=$1sudo apt-get update
+    TASK=$1
     printf "${LBLACK} [ ]  ${TASK} \n${LRED}"
 }
 
@@ -126,7 +126,6 @@ function ubuntu_setup() {
             _cmd "sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 2"
             _cmd "sudo update-alternatives --config python3 <<< '1'"
             _task_done
-
         fi
         if ! dpkg -s ansible >/dev/null 2>&1; then
             __task "Installing Ansible"
