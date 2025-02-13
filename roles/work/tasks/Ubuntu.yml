@@ -29,6 +29,13 @@
    dest: "{{ ansible_user_dir }}/.local/bin/repo"
    force: yes
    mode: '0755'
+- name: "{{ role_name }} | Copy switch_python script"
+  ansible.builtin.copy:
+   src: "{{ role_path }}/files/bin/switch_python"
+   dest: "{{ ansible_user_dir }}/.local/bin/switch_python"
+   force: yes
+   mode: '0755'
+
 - name: "{{ role_name }} | Configure docker"
   block:
     - name: "{{ role_name }} | Create .docker directory"
