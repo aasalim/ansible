@@ -38,8 +38,6 @@ ls.add_snippets('all', {
 
 ## TODO
 
-- [ ] 
-
 ### Work
 
 - [ ] 
