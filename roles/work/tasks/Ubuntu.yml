@@ -8,68 +8,13 @@
     path: /usr/bin/podman
   register: podman_check
 
-- name: "{{ role_name }} | Set podman repository"
-  ansible.builtin.shell: |
-    . /etc/os-release
-    echo "$VERSION_ID"
-  register: ubuntu_version
-  changed_when: false
-  when: not podman_check.stat.exists
-
-- name: "{{ role_name }} | Set podman repository"
-  ansible.builtin.set_fact:
-    podman_repo_url: "http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_{{ ubuntu_version.stdout }}/"
-  when: not podman_check.stat.exists
-- name: "{{ role_name }} | Update apt cache"
-  ansible.builtin.apt:
-    update_cache: yes
-  become: true
-  when: not podman_check.stat.exists
-
-- name: "{{ role_name }} | Dependencies"
-  ansible.builtin.apt:
-    name:
-      - build-essential
-      - curl
-      - software-properties-common
-      - git
-      - git-lfs
-      - ninja-build
-      - cmake
-      - gcc-9
-      - g++-9
-      - ccache
-    state: present
-  become: true
-  when: not ghs_check.stat.exists
-
-- name: "{{ role_name }} | Add podman repository"
-  ansible.builtin.shell: |
-    sudo echo "deb {{ podman_repo_url }} /" | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
-  become: true
-  when: not podman_check.stat.exists
-
-- name: "{{ role_name }} | Add podman repository key"
-  ansible.builtin.shell: |
-    sudo curl -L {{ podman_repo_url }}Release.key | sudo gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/devel_kubic_libcontainers_stable.gpg > /dev/null
-  args:
-    warn: no
-  become: true
-  when: not podman_check.stat.exists
-
-- name: "{{ role_name }} | Update apt cache"
-  ansible.builtin.apt:
-    update_cache: yes
-  become: true
-  when: not podman_check.stat.exists
-
-- name: "{{ role_name }} | Install podman"
-  ansible.builtin.apt:
-    name: podman
-    state: present
-  become: true
-  when: not podman_check.stat.exists
-
+- name: "{{ role_name }} | Create symlink for wsl.conf"
+  ansible.builtin.file:
+    src: "{{ role_path }}/files/wsl.conf"
+    dest: "/etc/wsl.conf"
+    state: link
+    force: yes
+  become: yes
 - name: "{{ role_name }} | Create symlink for drproxy"
   ansible.builtin.file:
     src: "{{ role_path }}/files/sbin/drproxy"
@@ -78,7 +23,12 @@
     force: true
   become: true
   when: not ghs_check.stat.exists
-
+- name: "{{ role_name }} | Copy googlerepo script"
+  ansible.builtin.copy:
+   src: "{{ role_path }}/files/bin/repo"
+   dest: "{{ ansible_user_dir }}/.local/bin/repo"
+   force: yes
+   mode: '0755'
 - name: "{{ role_name }} | Configure docker"
   block:
     - name: "{{ role_name }} | Create .docker directory"
@@ -97,7 +47,6 @@
       template:
         src: "{{ role_path }}/templates/config.json.j2"
         dest: "{{ ansible_user_dir }}/.docker/config.json"
-      no_log: true
 
 - name: "{{ role_name }} | Configure git"
   block:
@@ -125,6 +74,66 @@
     src: "{{ role_path }}/templates/.bash_work.j2"
     dest: "{{ ansible_user_dir }}/.bash_work"
   no_log: true
+
+- name: "{{ role_name }} | Set podman repository"
+  ansible.builtin.shell: |
+    . /etc/os-release
+    echo "$VERSION_ID"
+  register: ubuntu_version
+  changed_when: false
+  when: not podman_check.stat.exists
+
+- name: "{{ role_name }} | Set podman repository"
+  ansible.builtin.set_fact:
+    podman_repo_url: "http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/unstable/xUbuntu_{{ ubuntu_version.stdout }}/"
+  when: not podman_check.stat.exists
+- name: "{{ role_name }} | Update apt cache"
+  ansible.builtin.apt:
+    update_cache: yes
+  become: true
+  when: not podman_check.stat.exists
+
+- name: "{{ role_name }} | Dependencies"
+  ansible.builtin.apt:
+    name:
+      - build-essential
+      - curl
+      - software-properties-common
+      - git
+      - git-lfs
+      - ninja-build
+      - cmake
+      - gcc-9
+      - g++-9
+      - ccache
+    state: present
+  become: true
+  when: not ghs_check.stat.exists
+
+- name: "{{ role_name }} | Add podman repository"
+  ansible.builtin.shell: |
+    sudo echo "deb {{ podman_repo_url }} /" | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:unstable.list
+  become: true
+  when: not podman_check.stat.exists
+
+- name: "{{ role_name }} | Add podman repository key"
+  ansible.builtin.shell: |
+    sudo curl -L {{ podman_repo_url }}Release.key | sudo gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/unstable.gpg > /dev/null
+  become: true
+  when: not podman_check.stat.exists
+
+- name: "{{ role_name }} | Update apt cache"
+  ansible.builtin.apt:
+    update_cache: yes
+  become: true
+  when: not podman_check.stat.exists
+
+- name: "{{ role_name }} | Install podman"
+  ansible.builtin.apt:
+    name: podman
+    state: present
+  become: true
+  when: not podman_check.stat.exists
 
 - name: "{{ role_name }} | Configure symlink podman for docker"
   file:
@@ -224,12 +233,6 @@
         become: true
   when: not ghs_check.stat.exists
 
-- name: "{{ role_name }} | Copy googlerepo script"
-  ansible.builtin.copy:
-   src: "{{ role_path }}/files/bin/repo"
-   dest: "{{ ansible_user_dir }}/.local/bin/repo"
-   force: yes
-   mode: '0755'
 
 #- name: "{{ role_name }} | Create symlink for resolv.conf"
 #  ansible.builtin.copy:
@@ -247,10 +250,3 @@
 #    force: yes
 #  become: yes
 
-# - name: "{{ role_name }} | Create symlink for wsl.conf"
-#   ansible.builtin.file:
-#     src: "{{ role_path }}/files/wsl.conf"
-#     dest: "/etc/wsl.conf"
-#     state: link
-#     force: yes
-#   become: yes
