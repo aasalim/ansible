@@ -4,6 +4,11 @@
     path: /usr/local/bin/tmux
   register: tmux_check
 
+- name: "{{ role_name }} | Check for tmuxifier"
+  ansible.builtin.stat:
+    path: "{{ ansible_user_dir }}/.tmuxifier"
+  register: tmuxifier_check
+
 - name: "{{ role_name }} | Dependencies"
   ansible.builtin.apt:
     name:
@@ -90,4 +95,5 @@
   ansible.builtin.git:
     repo: https://github.com/jimeh/tmuxifier
     dest: "{{ ansible_user_dir }}/.tmuxifier"
+  when: not tmuxifier_check.stat.exists
 

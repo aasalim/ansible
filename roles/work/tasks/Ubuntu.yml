@@ -3,6 +3,10 @@
   ansible.builtin.stat:
     path: /usr/ghs/multi_814/multi
   register: ghs_check
+- name: "{{ role_name }} | Check for podman"
+  ansible.builtin.stat:
+    path: /usr/bin/podman
+  register: podman_check
 
 - name: "{{ role_name }} | Set podman repository"
   ansible.builtin.shell: |
@@ -10,15 +14,17 @@
     echo "$VERSION_ID"
   register: ubuntu_version
   changed_when: false
+  when: not podman_check.stat.exists
 
 - name: "{{ role_name }} | Set podman repository"
   ansible.builtin.set_fact:
     podman_repo_url: "http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_{{ ubuntu_version.stdout }}/"
-
+  when: not podman_check.stat.exists
 - name: "{{ role_name }} | Update apt cache"
   ansible.builtin.apt:
     update_cache: yes
   become: true
+  when: not podman_check.stat.exists
 
 - name: "{{ role_name }} | Dependencies"
   ansible.builtin.apt:
@@ -35,11 +41,13 @@
       - ccache
     state: present
   become: true
+  when: not ghs_check.stat.exists
 
 - name: "{{ role_name }} | Add podman repository"
   ansible.builtin.shell: |
     sudo echo "deb {{ podman_repo_url }} /" | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
   become: true
+  when: not podman_check.stat.exists
 
 - name: "{{ role_name }} | Add podman repository key"
   ansible.builtin.shell: |
@@ -47,17 +55,20 @@
   args:
     warn: no
   become: true
+  when: not podman_check.stat.exists
 
 - name: "{{ role_name }} | Update apt cache"
   ansible.builtin.apt:
     update_cache: yes
   become: true
+  when: not podman_check.stat.exists
 
 - name: "{{ role_name }} | Install podman"
   ansible.builtin.apt:
     name: podman
     state: present
   become: true
+  when: not podman_check.stat.exists
 
 - name: "{{ role_name }} | Create symlink for drproxy"
   ansible.builtin.file:

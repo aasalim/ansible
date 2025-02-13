@@ -1,13 +1,13 @@
 default_roles:
+  - git
   - python
   - system
   - neovim
   - ssh
-  - git
   - bash
-  - tmux
   - rsync
   - lazygit
+  - tmux
 user_name: "Ahmed Salim"
 email: !vault |
           $ANSIBLE_VAULT;1.1;AES256
