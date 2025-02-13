@@ -115,18 +115,18 @@ function ubuntu_setup() {
         __task "Updating Ubuntu"
         _cmd "sudo apt-get update && sudo apt-get upgrade -y"
         _task_done
-        if ! command -v python3.11 &> /dev/null; then
-            __task "Installing python3.11"
-            _cmd "sudo apt-get update"
-            _cmd "sudo apt-get install -y software-properties-common"
-            _cmd "sudo apt-add-repository -y ppa:deadsnakes/ppa"
-            _cmd "sudo apt-get update"
-            _cmd "sudo apt-get install -y python3.11 python3.11-venv python3.11-distutils"
-            _cmd "sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 1"
-            _cmd "sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 2"
-            _cmd "sudo update-alternatives --config python3 <<< '1'"
-            _task_done
-        fi
+        # if ! command -v python3.11 &> /dev/null; then
+        #     __task "Installing python3.11"
+        #     _cmd "sudo apt-get update"
+        #     _cmd "sudo apt-get install -y software-properties-common"
+        #     _cmd "sudo apt-add-repository -y ppa:deadsnakes/ppa"
+        #     _cmd "sudo apt-get update"
+        #     _cmd "sudo apt-get install -y python3.11 python3.11-venv python3.11-distutils"
+        #     _cmd "sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 1"
+        #     _cmd "sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 2"
+        #     _cmd "sudo update-alternatives --config python3 <<< '1'"
+        #     _task_done
+        # fi
         if ! dpkg -s ansible >/dev/null 2>&1; then
             __task "Installing Ansible"
             _cmd "sudo apt-get install -y software-properties-common"
