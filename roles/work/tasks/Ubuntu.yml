@@ -13,7 +13,7 @@
 
 - name: "{{ role_name }} | Set podman repository"
   ansible.builtin.set_fact:
-    podman_repo_url: "http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/unstable/xUbuntu_{{ ubuntu_version.stdout }}/"
+    podman_repo_url: "http://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_{{ ubuntu_version.stdout }}/"
 
 - name: "{{ role_name }} | Update apt cache"
   ansible.builtin.apt:
@@ -38,12 +38,12 @@
 
 - name: "{{ role_name }} | Add podman repository"
   ansible.builtin.shell: |
-    echo "deb {{ podman_repo_url }} /" | tee /etc/apt/sources.list.d/devel:kubic:libcontainers:unstable.list
+    sudo echo "deb {{ podman_repo_url }} /" | sudo tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list
   become: true
 
 - name: "{{ role_name }} | Add podman repository key"
   ansible.builtin.shell: |
-    curl -L {{ podman_repo_url }}Release.key | gpg --dearmor | tee /etc/apt/trusted.gpg.d/devel_kubic_libcontainers_unstable.gpg > /dev/null
+    sudo curl -L {{ podman_repo_url }}Release.key | sudo gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/devel_kubic_libcontainers_stable.gpg > /dev/null
   args:
     warn: no
   become: true
