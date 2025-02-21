@@ -1,4 +1,10 @@
 ---
+- name: "{{ role_name }} | Install bash-completion"
+  ansible.builtin.apt:
+    name:
+      - bash-completion
+    state: present
+  become: true
 - name: "{{ role_name }} | Ensure ~/.config exists"
   ansible.builtin.file:
     path: "{{ ansible_user_dir }}/.config"

@@ -10,8 +10,8 @@
 - name: "{{ role_name }} | Install"
   ansible.builtin.apt:
     name:
-      - neovim
-      - tmux
+      - ncdu
+      - nala
     state: present
   become: true
 

@@ -48,7 +48,7 @@ ls.add_snippets('all', {
 
 ## NOTES
 
-- 
+    - 
 ]],
             { date() }
         )

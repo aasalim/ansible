@@ -45,6 +45,7 @@ alias gd='git diff'                      # Show differences
 alias gp='git pull'                      # Pull from the repository
 alias gb='git branch'                    # List branches
 alias gcl='git clone'                    # Clone a repository
+alias gbcl='git clone --bare'            # Bare clone a repository
 alias gr='git reflog'                    # Action history
 alias gP='git push origin'               # Push to origin
 alias gl='git log --oneline --color --abbrev-commit --decorate --graph --date=relative' # View git logs

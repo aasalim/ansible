@@ -1,15 +1,18 @@
-
--- _____    _                                
---|_   _|__| | ___  ___  ___ ___  _ __   ___ 
+-- _____    _
+--|_   _|__| | ___  ___  ___ ___  _ __   ___
 --  | |/ _ \ |/ _ \/ __|/ __/ _ \| '_ \ / _ \
 --  | |  __/ |  __/\__ \ (_| (_) | |_) |  __/
 --  |_|\___|_|\___||___/\___\___/| .__/ \___|
---                               |_|         
+--                               |_|
 return {
   enabled = true,
-  'nvim-telescope/telescope.nvim', tag = '0.1.8',
-  dependencies = { 'nvim-lua/plenary.nvim' },
+  'nvim-telescope/telescope.nvim',
+  tag = '0.1.8',
+  dependencies = {
+    'nvim-lua/plenary.nvim',
+    { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+  },
   config = function()
-    require("custom.telescope")
-  end
+    require('custom.telescope')
+  end,
 }

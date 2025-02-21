@@ -8,7 +8,7 @@ install_python() {
         sudo apt install -y software-properties-common
         sudo add-apt-repository -y ppa:deadsnakes/ppa
         sudo apt update
-        sudo apt install -y python$version
+        sudo apt install -y python$version python3-pip
     fi
 }
 
@@ -32,7 +32,7 @@ switch_python() {
 
 # Main script logic
 if [[ $# -ne 1 ]]; then
-    echo "Usage: $0 {3.10|3.11}"
+    echo "Usage: $0 {3.8|3.10|3.11}"
     exit 1
 fi
 
@@ -43,7 +43,8 @@ install_python $version
 
 # Register Python versions with update-alternatives (if not already registered)
 register_python 3.10 1
-register_python 3.11 2
+register_python 3.11 1
+register_python 3.8 1
 
 # Switch to the selected Python version
 switch_python $version
