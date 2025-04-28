@@ -25,6 +25,7 @@
       - luarocks
       - nodejs
       - npm
+      - python3.10-venv
     state: present
   become: true
   when: not neovim_check.stat.exists

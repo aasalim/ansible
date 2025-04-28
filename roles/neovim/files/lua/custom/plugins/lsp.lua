@@ -50,11 +50,29 @@ return {
       local capabilities = vim.lsp.protocol.make_client_capabilities()
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
+      local function get_compile_commands_arg()
+        local build_dir = vim.fn.system(
+          "find . -maxdepth 2 -type d -regex './\\(build/Debug\\|build_x86_64/Debug\\|build/RelWithDebInfo\\)' 2>/dev/null | head -n 1"
+        )
+        build_dir = string.gsub(build_dir, '%s+$', '') -- Remove trailing whitespaces
+        build_dir = string.gsub(build_dir, '^%./', '') -- Remove leading "./" if it exists
+
+        local compile_commands_arg = '--compile-commands-dir='
+        if build_dir == '' then
+          vim.notify('No build directory found!', vim.log.levels.WARN, { title = 'clangd' })
+          compile_commands_arg = compile_commands_arg .. '.' -- Or some default, like the current directory
+        else
+          compile_commands_arg = compile_commands_arg .. build_dir
+        end
+
+        return compile_commands_arg
+      end
       local lsp_servers = {
         clangd = {
+          root_dir = require('lspconfig.util').root_pattern('.git', 'Makefile', 'CMakeLists.txt'),
           cmd = {
             'clangd',
-            '--compile-commands-dir=build_x86_64/RelWithDebInfo',
+            get_compile_commands_arg(),
             '--background-index',
             '--clang-tidy',
             '--header-insertion=iwyu',
@@ -91,7 +109,8 @@ return {
           },
         },
         marksman = {},
-        -- pyright = {},
+        pylsp = {},
+        -- ['sonarlint-language-server'] = {},
         -- rust_analyzer = {},
         lua_ls = {
           settings = {
@@ -107,9 +126,15 @@ return {
       vim.list_extend(ensure_tools_installed, {
         'stylua',
         'prettier',
+        'clang-format',
+        'black',
+        'tree-sitter-cli',
+        -- 'sonarlint-language-server',
       })
       require('mason-tool-installer').setup({ ensure_installed = ensure_tools_installed })
       require('mason-lspconfig').setup({
+        ensure_installed = {},
+        automatic_installation = true,
         handlers = {
           function(server_name)
             local server = lsp_servers[server_name] or {}
@@ -124,6 +149,11 @@ return {
         sources = {
           null_ls.builtins.formatting.stylua,
           null_ls.builtins.formatting.prettier,
+          null_ls.builtins.formatting.black,
+          null_ls.builtins.formatting.clang_format.with({
+            filetypes = { 'c', 'cpp', 'h', 'hpp' },
+            -- extra_args = {'--style=/home/asalim10/work/FHCM/FNV4ZONAL-83963/.clang-format' },
+          }),
         },
         vim.keymap.set('n', '<leader>gf', vim.lsp.buf.format, { desc = 'Format current buffer' }),
       })

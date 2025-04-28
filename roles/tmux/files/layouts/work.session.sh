@@ -24,7 +24,7 @@ if initialize_session "work"; then
     # run_cmd "clear"
 
     new_window "fzm"
-    run_cmd "cd ~/work/FZM"
+    run_cmd "cd ~/work/fzm"
     run_cmd "nvim ."
 
     select_window "terminal"

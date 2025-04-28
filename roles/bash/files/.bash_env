@@ -53,5 +53,7 @@ export VIMINIT="source $VIMRC"
 # export PATH="$PATH:/path/to/bin"
 export PATH="$HOME/.local/bin:$PATH"
 
+# Set the system language to English (US)
+export LANG="en_US.UTF-8"
 
 echo "Loaded .bash_env"

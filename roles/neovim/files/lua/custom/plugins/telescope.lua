@@ -10,6 +10,7 @@ return {
   tag = '0.1.8',
   dependencies = {
     'nvim-lua/plenary.nvim',
+    'jemag/telescope-diff.nvim',
     { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
   },
   config = function()

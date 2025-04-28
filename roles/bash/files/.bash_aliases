@@ -63,4 +63,75 @@ alias work='tmuxifier load-session work'
 # === cat Aliases ===
 alias cat='batcat'
 
+# function rgf() {
+#     c="rg --column -nS --no-heading --color=always"
+#     a="$(fzf --bind "change:reload:$c {q} || true" \
+#         --ansi --reverse --preview '' --header 'Search in files')"
+#     if [[ -n $a ]]; then
+#         IFS=':' read -r file line char _ <<< "$a"
+#         "$EDITOR" "$file" +"$line" -c "norm ${char}lh"
+#         cd "$(dirname "$(readlink -f "$file")")"
+#     fi
+# }
+function rgf() {
+  local ignore_flag="--ignore-file .gitignore" # Default to ignore gitignore
+  if [[ "$1" == "--respect-gitignore" ]]; then
+    ignore_flag="" # Override to respect gitignore
+    shift # Remove the flag from the arguments
+  fi
+
+  c="rg --column -nS --no-heading --color=always $ignore_flag"
+  a="$(fzf --bind "change:reload:$c {q} || true" \
+      --ansi --reverse --preview '' --header 'Search in files')"
+  if [[ -n $a ]]; then
+    IFS=':' read -r file line char _ <<< "$a"
+    "$EDITOR" "$file" +"$line" -c "norm ${char}lh"
+    cd "$(dirname "$(readlink -f "$file")")"
+  fi
+}
+extract() {
+  if [ -z "$1" ]; then
+    echo "Usage: extract <file>"
+    return 1
+  fi
+
+  case "$1" in
+    *.tar)
+      tar xvf "$1" ;;
+    *.tar.gz|*.tgz)
+      tar xvzf "$1" ;;
+    *.tar.bz2|*.tbz2)
+      tar xvjf "$1" ;;
+    *.zip)
+      unzip "$1" ;;
+    *.rar)
+      unrar x "$1" ;;
+    *.7z)
+      7z x "$1" ;;
+    *.gz)
+      gunzip "$1" ;;
+    *.bz2)
+      bunzip2 "$1" ;;
+    *)
+      echo "Unsupported file format: $1"
+      return 1 ;;
+  esac
+}
+vdiff () {
+    if [ "${#}" -ne 2 ] ; then
+        echo "vdiff requires two arguments"
+        echo " comparing dirs: vdiff dir_a dir_b"
+        echo " comparing files: vdiff file_a file_b"
+        return 1
+    fi
+    local left="${1}"
+    local right="${2}"
+
+    if [ -d "${left}" ] && [ -d "${right}" ]; then
+        vim +"DirDiff ${left} ${right}"
+    else
+        vim -d "${left}" "${right}"
+    fi
+}
+
 echo "Loaded .bash_aliases"
